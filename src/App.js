@@ -1,7 +1,13 @@
+// @flow
+
 import React, { Component } from 'react';
 import logo from './logo.svg';
 // import './App.css';
-import { Container, Divider, Dropdown, Grid, Header, Image, List, Menu, Segment } from 'semantic-ui-react';
+import {
+  Container, Divider, Dropdown,
+  Grid, Header, Image,
+  List, Menu, Segment
+} from 'semantic-ui-react';
 
 class App extends Component {
   // render() {
