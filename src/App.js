@@ -1,6 +1,7 @@
 // @flow
 
 import React, { Component } from 'react';
+import { connect } from 'react-firebase';
 import logo from './logo.svg';
 // import './App.css';
 import {
@@ -56,8 +57,23 @@ class App extends Component {
           </Dropdown>
         </Container>
       </Menu>
+      <Container text style={{ marginTop: '7em' }}>
+        <button onClick={() => this.props.setValue(this.props.value - 1)}>-</button>
+        <span>{this.props.value}</span>
+        <button onClick={() => this.props.setValue(this.props.value + 1)}>+</button>
+      </Container>
+
     </div>
   )
 }
 
-export default App;
+export default connect((props, ref) => ({
+  value: 'counterValue',
+  setValue: (value = 0) => {
+    if (typeof value !== 'number') {
+      value = 0;
+    }
+    ref('counterValue').set(value);
+  }
+}))(App);
+// export default App;
