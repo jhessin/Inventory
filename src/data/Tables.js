@@ -1,61 +1,103 @@
 import React, { Component } from 'react';
-import { Container, List, Input, Button } from 'semantic-ui-react';
-import { connect } from 'react-firebase';
+import { Container, List, Form, Icon } from 'semantic-ui-react';
+import firebase from '../firebase';
 
-class TablesClass extends Component {
+export class Tables extends Component {
   static defaultProps = {
     user: null
   }
 
   state = {
-    newListName: ''
+    newListName: '',
+    tables: [],
+    addTable: () => null
   }
+
+  componentWillReceiveProps(nextProps) {
+
+    if (nextProps.user) {
+      this.uid = nextProps.user.uid
+    } else {
+      return;
+    }
+
+    this.ref = firebase.database().ref(this.uid + '/Tables');
+
+    this.setState({
+      addTable: tableName => this.ref.push({ tableName })
+    });
+
+    if (!this.tableDict) {
+      this.tableDict = {}
+    }
+
+    // The nitty gritty of accessing the database
+    const loadTables = () => {
+      const tables = []
+      Object.keys(this.tableDict).forEach(key => {
+        const table = {
+          key,
+          tableName: this.tableDict[key]
+        };
+
+        tables.push(this.renderTable(table));
+
+        this.setState({
+          tables
+        });
+      });
+    };
+
+    this.ref.on('child_added', snap => {
+      this.tableDict[snap.key] = snap.val().tableName;
+
+      loadTables();
+    });
+
+    this.ref.on('child_removed', snap => {
+      if (delete this.tableDict[snap.key]) {
+        if (Object.keys(this.tableDict).length === 0) {
+          this.setState({ tables: [] }) // shortcut for faster rendering.
+        } else {
+          loadTables();
+        }
+      }
+    });
+
+  }
+
+  deleteTable = key => this.ref.child(key).remove();
 
   onChange = (e, { name, value }) => this.setState({ [name]: value })
 
-  onSubmit = () => this.props.addTable(this.state.newListName)
+  onSubmit = () => this.state.addTable(this.state.newListName)
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.tables) {
-      Object.values(this.props.tables).forEach((table, index) => console.log(index, table.tableName));
-    }
-  }
+  renderTable = table => (
+    <List.Item key={table.key} >
+      {table.tableName}
+      <Icon
+        link
+        name='trash'
+        onClick={() => this.deleteTable(table.key)}
+      />
+    </List.Item>
+  );
 
   render = () => (
-    <Container>
-      {!this.props.user ? 'Please Login To Continue' :
-      <div>
-        {!this.props.tables ? null :
-          <List>
-            {Object.values(this.props.tables).forEach(
-              (table, index) => (
-                <List.Item key={index}>
-                  table.tableName
-                </List.Item>
-              )
-            )}
-          </List>
-        }
-        <Input
-          placeholder='New Table'
-          value={this.state.newListName}
-          name='newListName'
-          onChange={this.onChange}
-        />
-        <Button
-          onClick={this.onSubmit}
-        >Add</Button>
-      </div>
+    <div>
+      {!this.uid ? 'Please Login To Continue' :
+      <Container>
+        <List size='massive' items={this.state.tables} />
+        <Form onSubmit={this.onSubmit}>
+          <Form.Input
+            placeholder='New Table'
+            value={this.state.newListName}
+            name='newListName'
+            onChange={this.onChange}
+          />
+        </Form>
+      </Container>
     }
-    </Container>
+  </div>
   )
 }
-
-export const Tables = connect((props, ref) => {
-  if (!props.user) return {};
-
-  return {
-    tables: `${props.user.uid}/Tables`,
-    addTable: tableName => ref(`${props.user.uid}/Tables`).push({ tableName })
-  }
-})(TablesClass)
