@@ -3,6 +3,10 @@ import { Container, List, Form, Icon } from 'semantic-ui-react';
 import { listen } from './db';
 
 export class Tables extends Component {
+  static defaultProps = {
+    onSelect: () => null
+  }
+
   state = {
     newListName: '',
     tables: [],
@@ -22,7 +26,7 @@ export class Tables extends Component {
     });
   }
 
-  // The nitty gritty of accessing the database
+  // The nitty gritty of formatting the database
   loadTables = (obj) => {
     const tables = []
     if (Object.keys(obj).length === 0) {
@@ -53,7 +57,7 @@ export class Tables extends Component {
   }
 
   renderTable = table => (
-    <List.Item as='a' key={table.key} >
+    <List.Item as='a' key={table.key} onClick={() => this.props.onSelect(table.key)}>
       {table.tableName}
       <Icon
         link

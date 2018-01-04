@@ -8,8 +8,8 @@ import logo from './logo.svg';
 
 class App extends Component {
   state = {
-    createAccount: false,
-    currentUser: null
+    currentUser: null,
+    selectedTable: null
   }
 
   constructor(props) {
@@ -60,7 +60,7 @@ class App extends Component {
           </Dropdown>
         </Menu>
 
-        <Tables user={this.state.currentUser}/>
+        <Tables onSelect={selectedTable => this.setState({ selectedTable })}/>
       </div>
     );
   }
