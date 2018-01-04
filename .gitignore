@@ -9,7 +9,7 @@
 # production
 /build
 
-# API keys
+# API Keys
 firebase.js
 
 # misc
