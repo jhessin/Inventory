@@ -3,7 +3,7 @@ import {
   Header, Menu, Dropdown
 } from 'semantic-ui-react';
 import { CreateAccount, Login } from './Modals';
-import { Tables, listen, signOut } from './data';
+import { Tables, Fields, listen, signOut } from './data';
 import logo from './logo.svg';
 
 class App extends Component {
@@ -60,7 +60,10 @@ class App extends Component {
           </Dropdown>
         </Menu>
 
-        <Tables onSelect={selectedTable => this.setState({ selectedTable })}/>
+        { this.state.selectedTable ?
+          <Fields back={() => this.setState({ selectedTable: null })}/> :
+          <Tables onSelect={selectedTable => this.setState({ selectedTable })}/>
+        }
       </div>
     );
   }

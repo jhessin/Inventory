@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import { Container, List, Form, Icon } from 'semantic-ui-react';
+import {
+  Container, Icon, Form,
+  Label, Grid
+} from 'semantic-ui-react';
 import { listen } from './db';
 
 export class Tables extends Component {
@@ -37,7 +40,7 @@ export class Tables extends Component {
 
     Object.keys(obj).forEach(key => {
 
-      tables.push(this.renderTable(obj[key]));
+      tables.push(obj[key]);
 
       this.setState({
         tables
@@ -57,31 +60,44 @@ export class Tables extends Component {
   }
 
   renderTable = table => (
-    <List.Item as='a' key={table.key} onClick={() => this.props.onSelect(table.key)}>
-      {table.tableName}
-      <Icon
-        link
-        name='trash'
-        onClick={() => table.ref.remove()}
-      />
-    </List.Item>
+    <Grid.Row key={table.key}>
+        <Grid.Column>
+          <Label
+            as='a'
+            size='massive'
+            onClick={() => this.props.onSelect(table.key)}
+            floated='left'
+            content={table.tableName}
+          />
+        </Grid.Column>
+        <Grid.Column>
+          <Icon
+            link
+            name='trash'
+            size='massive'
+            onClick={() => table.ref.remove()}
+          />
+        </Grid.Column>
+    </Grid.Row>
   );
 
   render = () => (
-    <div>
+    <Container textAlign='center'>
       {!this.state.user ? 'Please Login To Continue' :
-      <Container>
-        <List size='massive' items={this.state.tables} />
-        <Form onSubmit={this.onSubmit}>
-          <Form.Input
-            placeholder='New Table'
-            value={this.state.newListName}
-            name='newListName'
-            onChange={this.onChange}
-          />
-        </Form>
-      </Container>
+        <Grid centered stretched columns={2}>
+          {this.state.tables.map(this.renderTable)}
+          <Grid.Row columns={1}>
+            <Form size='massive' onSubmit={this.onSubmit}>
+              <Form.Input
+                placeholder='New Table'
+                value={this.state.newListName}
+                name='newListName'
+                onChange={this.onChange}
+              />
+            </Form>
+          </Grid.Row>
+        </Grid>
     }
-  </div>
+  </Container>
   )
 }
