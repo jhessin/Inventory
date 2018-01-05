@@ -48,8 +48,6 @@ export class Tables extends Component {
     });
   };
 
-  deleteTable = key => this.ref.child(key).remove();
-
   onChange = (e, { name, value }) => this.setState({ [name]: value })
 
   onSubmit = () => {
