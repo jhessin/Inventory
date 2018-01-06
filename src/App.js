@@ -61,7 +61,10 @@ class App extends Component {
         </Menu>
 
         { this.state.selectedTable ?
-          <Fields back={() => this.setState({ selectedTable: null })}/> :
+          <Fields
+            back={() => this.setState({ selectedTable: null })}
+            tableId={this.state.selectedTable}
+          /> :
           <Tables onSelect={selectedTable => this.setState({ selectedTable })}/>
         }
       </div>
