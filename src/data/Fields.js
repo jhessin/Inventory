@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+// import createField from './fieldHelpers';
+// createfield({ named: string, type: Enum, tableId(opt): string});
 import {
   Button, Table
 } from 'semantic-ui-react';
@@ -10,8 +12,11 @@ export class Fields extends Component {
   }
 
   state = {
-    fields: [],
-    rows: []
+    fields: [], // id: string,
+		// fieldName: string,
+		// fieldType: Enum(string, number, date, link),
+		// linkedTable: (for fieldType link) string id of the linked table.
+    rows: [],	// an array of objects indexed by the field ids.
   }
 
   renderFields = field => (
@@ -20,7 +25,7 @@ export class Fields extends Component {
 
   renderRows = row => (
     <Table.Row>
-      {this.state.fields.map(field => row[field])}
+      {this.state.fields.map(field => row[field.id])}
     </Table.Row>
   )
 
