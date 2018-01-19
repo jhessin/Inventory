@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-// import createField from './fieldHelpers';
+import { createField } from './fieldHelpers';
 // createfield({ named: string, type: Enum, tableId(opt): string});
 import {
   Button, Table
