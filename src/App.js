@@ -3,7 +3,8 @@ import {
   Header, Menu, Dropdown
 } from 'semantic-ui-react';
 import { CreateAccount, Login } from './Modals';
-import { Tables, Fields, listen, signOut } from './data';
+import { Tables, Fields } from './data';
+import firebase from './firebase';
 import logo from './logo.svg';
 
 class App extends Component {
@@ -15,12 +16,14 @@ class App extends Component {
   constructor(props) {
     super(props);
 
-    listen({
-      getUser: currentUser => this.setState({ currentUser })
+    firebase.auth().onAuthStateChanged(currentUser => {
+      if (currentUser) {
+        this.setState({ currentUser })
+      }
     });
   }
 
-  logout = () => signOut();
+  logout = () => firebase.auth().signOut();
 
   render() {
     return (

@@ -28,9 +28,21 @@ export class Path {
     this.ref = firebase.database().ref(path);
 
     this.ref.on('child_added', snap => {
-      this._data[snap.key] = snap.val();
-      this._data[snap.key].key = snap.key;
-      this._data[snap.key].ref = snap.ref;
+      if (!snap.exists()) {
+        return;
+      }
+
+      const value = snap.val();
+      if (typeof value === 'object') {
+        this._data[snap.key] = value;
+        this._data[snap.key].key = snap.key;
+        this._data[snap.key].ref = snap.ref;
+      } else {
+        const { key, ref } = snap;
+        this._data[snap.key] = { key, ref };
+        this._data[snap.key].value = value;
+      }
+
       this.onUpdate();
     });
 
@@ -39,6 +51,10 @@ export class Path {
         this.onUpdate();
       }
     });
+
+    this.ref.on('child_changed', snap => {
+      this._data[snap.key] = snap.val();
+    })
   }
 
   get data() {
@@ -69,50 +85,52 @@ export class Path {
     this.ref.update(obj);
   }
 
+  push(data) {
+    this.ref.push(data);
+  }
+
   remove() {
     return this.ref.remove();
   }
 }
 
 // OLD STUFF TO REPLACE
-export function listen({path, getRef, getUser, onChange}) {
-  firebase.auth().onAuthStateChanged(
-    user => {
-      if (user) {
-        if (getUser) {
-          getUser(user);
-        }
-
-        const ref = firebase.database().ref(`${user.uid}/${path}`);
-
-        if (getRef) {
-          getRef(ref);
-        }
-
-        if (!onChange || !path) {
-          return;
-        }
-
-        const obj = {}
-        ref.on('child_added', snap => {
-          obj[snap.key] = snap.val();
-          obj[snap.key].key = snap.key;
-          obj[snap.key].ref = snap.ref;
-          onChange(obj);
-        });
-
-        ref.on('child_removed', snap => {
-          if (delete obj[snap.key]) {
-            onChange(obj);
-          }
-        });
-      } else {
-        if (getUser) {
-          getUser();
-        }
-      }
-    }
-  )
-}
-
-export function signOut() { firebase.auth().signOut(); }
+// export function listen({path, getRef, getUser, onChange}) {
+//   firebase.auth().onAuthStateChanged(
+//     user => {
+//       if (user) {
+//         if (getUser) {
+//           getUser(user);
+//         }
+//
+//         const ref = firebase.database().ref(`${user.uid}/${path}`);
+//
+//         if (getRef) {
+//           getRef(ref);
+//         }
+//
+//         if (!onChange || !path) {
+//           return;
+//         }
+//
+//         const obj = {}
+//         ref.on('child_added', snap => {
+//           obj[snap.key] = snap.val();
+//           obj[snap.key].key = snap.key;
+//           obj[snap.key].ref = snap.ref;
+//           onChange(obj);
+//         });
+//
+//         ref.on('child_removed', snap => {
+//           if (delete obj[snap.key]) {
+//             onChange(obj);
+//           }
+//         });
+//       } else {
+//         if (getUser) {
+//           getUser();
+//         }
+//       }
+//     }
+//   )
+// }
