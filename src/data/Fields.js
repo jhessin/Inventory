@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+// eslint-disable-next-line
 import { createField } from './fieldHelpers';
 // createfield({ named: string, type: Enum, tableId(opt): string});
 import {

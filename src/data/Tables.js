@@ -3,7 +3,7 @@ import {
   Container, Icon, Form,
   Label, Grid
 } from 'semantic-ui-react';
-import { listen } from './db';
+import { Path } from './db';
 
 export class Tables extends Component {
   static defaultProps = {
@@ -13,45 +13,27 @@ export class Tables extends Component {
   state = {
     newListName: '',
     tables: [],
-    user: null
+    path: null
   }
 
   constructor(props) {
     super(props);
 
     // authListen(user => (this.setState({ user })));
-
-    listen({
-      path: 'Tables',
-      getUser: user => this.setState({ user }),
-      getRef: ref => (this.ref = ref),
-      onChange: this.loadTables
-    });
-  }
-
-  // The nitty gritty of formatting the database
-  loadTables = (obj) => {
-    const tables = []
-    if (Object.keys(obj).length === 0) {
-      // Shortcut for faster loading
-      this.setState({ tables });
-      return;
-    }
-
-    Object.keys(obj).forEach(key => {
-
-      tables.push(obj[key]);
-
+    Path.fromUID('Tables').then(path => {
+      console.log('the path has been set!');
+      this.setState({ tables: path.dataArray });
+      path.onUpdate = () => this.setState({ tables: path.dataArray });
       this.setState({
-        tables
+        path
       });
     });
-  };
+  }
 
   onChange = (e, { name, value }) => this.setState({ [name]: value })
 
   onSubmit = () => {
-    this.ref.push({ tableName: this.state.newListName});
+    this.state.path.ref.push({ tableName: this.state.newListName});
     this.setState({
       newListName: ''
     });
@@ -81,7 +63,7 @@ export class Tables extends Component {
 
   render = () => (
     <Container textAlign='center'>
-      {!this.state.user ? 'Please Login To Continue' :
+      {!this.state.path ? 'Please Login To Continue' :
         <Grid centered stretched columns={2}>
           {this.state.tables.map(this.renderTable)}
           <Grid.Row columns={1}>
