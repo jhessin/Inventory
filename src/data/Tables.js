@@ -10,14 +10,14 @@ export class Tables extends Component {
     onSelect: () => null
   }
 
-  state = {
-    newListName: '',
-    tables: [],
-    path: null
-  }
-
   constructor(props) {
     super(props);
+    this.state = {
+      newListName: '',
+      tables: [],
+      path: null,
+      user: props.user
+    }
 
     // authListen(user => (this.setState({ user })));
     Path.fromUID('Tables').then(path => {
@@ -28,6 +28,11 @@ export class Tables extends Component {
         path
       });
     });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { user } = nextProps;
+    this.setState({ user });
   }
 
   onChange = (e, { name, value }) => this.setState({ [name]: value })
@@ -63,7 +68,7 @@ export class Tables extends Component {
 
   render = () => (
     <Container textAlign='center'>
-      {!this.state.path ? 'Please Login To Continue' :
+      {!this.state.user ? 'Please Login To Continue' :
         <Grid centered stretched columns={2}>
           {this.state.tables.map(this.renderTable)}
           <Grid.Row columns={1}>

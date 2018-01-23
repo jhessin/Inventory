@@ -9,18 +9,16 @@ import logo from './logo.svg';
 
 class App extends Component {
   state = {
-    currentUser: null,
+    user: null,
     selectedTable: null
   }
 
   constructor(props) {
     super(props);
 
-    firebase.auth().onAuthStateChanged(currentUser => {
-      if (currentUser) {
-        this.setState({ currentUser })
-      }
-    });
+    firebase.auth().onAuthStateChanged(user =>
+      this.setState({ user })
+    );
   }
 
   logout = () => firebase.auth().signOut();
@@ -51,7 +49,7 @@ class App extends Component {
                 }
               />
               {
-                this.state.currentUser ?
+                this.state.user ?
                 <Dropdown.Item onClick={this.logout}>Logout</Dropdown.Item> :
                 <Login
                   trigger={
@@ -68,7 +66,7 @@ class App extends Component {
             back={() => this.setState({ selectedTable: null })}
             tableId={this.state.selectedTable}
           /> :
-          <Tables onSelect={selectedTable => this.setState({ selectedTable })}/>
+          <Tables user={this.state.user} onSelect={selectedTable => this.setState({ selectedTable })}/>
         }
       </div>
     );

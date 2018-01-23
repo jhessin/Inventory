@@ -5,12 +5,12 @@ import firebase from '../firebase';
 export default firebase;
 
 export class Path {
-  static fromUID(path, sortField) {
+  static fromUID(path, sortBy) {
     return new Promise((resolve, reject) => {
       const unsubscribe = firebase.auth().onAuthStateChanged(user => {
         if (user) {
           unsubscribe();
-          resolve(new Path(`${user.uid}/${path}`, sortField));
+          resolve(new Path(`${user.uid}/${path}`, sortBy));
         }
       });
     });
@@ -18,13 +18,14 @@ export class Path {
 
   ref = firebase.database().ref(); // the ref to the Path
   path = ''; // the string of the Path
-  sortField = ''; // a field to sort the data by when getting the dataArray
+  sortBy = ''; // a field to sort the data by when getting the dataArray
+  filterBy = {}; // key value pairs to filter the list by.
   _data = {}; // the data stored by this Path
   onUpdate = () => {}; // a callback to be run when the data is updated.
 
-  constructor(path: string, sortField: ?string) {
+  constructor(path: string, sortBy: ?string) {
     this.path = path;
-    this.sortField = sortField;
+    this.sortBy = sortBy;
     this.ref = firebase.database().ref(path);
 
     this.ref.on('child_added', snap => {
@@ -32,6 +33,7 @@ export class Path {
         return;
       }
 
+      // TODO: Filter the list by the filterBy criteria.
       const value = snap.val();
       if (typeof value === 'object') {
         this._data[snap.key] = value;
@@ -77,7 +79,7 @@ export class Path {
       arr.push(this._data[key]);
     });
 
-    // TODO: Sort the data by it's sortField
+    // TODO: Sort the data by it's sortBy
     return arr;
   }
 
@@ -94,43 +96,22 @@ export class Path {
   }
 }
 
-// OLD STUFF TO REPLACE
-// export function listen({path, getRef, getUser, onChange}) {
-//   firebase.auth().onAuthStateChanged(
-//     user => {
-//       if (user) {
-//         if (getUser) {
-//           getUser(user);
-//         }
-//
-//         const ref = firebase.database().ref(`${user.uid}/${path}`);
-//
-//         if (getRef) {
-//           getRef(ref);
-//         }
-//
-//         if (!onChange || !path) {
-//           return;
-//         }
-//
-//         const obj = {}
-//         ref.on('child_added', snap => {
-//           obj[snap.key] = snap.val();
-//           obj[snap.key].key = snap.key;
-//           obj[snap.key].ref = snap.ref;
-//           onChange(obj);
-//         });
-//
-//         ref.on('child_removed', snap => {
-//           if (delete obj[snap.key]) {
-//             onChange(obj);
-//           }
-//         });
-//       } else {
-//         if (getUser) {
-//           getUser();
-//         }
-//       }
-//     }
-//   )
-// }
+// create an all time User
+const user = {
+  signIn: firebase.auth().signInWithEmailAndPassword,
+  signOut: firebase.auth().signOut,
+  data: null,
+  uid: null,
+  path: null
+};
+
+firebase.auth().onAuthStateChanged(currentUser => {
+  user.data = currentUser;
+  if (currentUser) {
+    user.uid = currentUser.uid;
+    user.path = path => new Path(`${user.uid}/${path}`)
+  } else {
+    user.uid = null;
+    user.path = null;
+  }
+})
