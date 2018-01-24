@@ -8,7 +8,7 @@ import logo from './logo.svg';
 
 class App extends Component {
   state = {
-    user: null,
+    user,
     selectedTable: null,
     unsubscribe: null,
   }

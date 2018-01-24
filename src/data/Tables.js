@@ -13,13 +13,11 @@ export class Tables extends Component {
   state = {
     newListName: '',
     tables: [],
-    path: null,
-    unsubscribe: null
+    path: null
   }
 
   componentDidMount() {
-    const unsubscribe = user.onChange(this.loadPath);
-    this.setState({ unsubscribe });
+    this.unsub = user.onChange(this.loadPath);
     this.loadPath();
   }
 
@@ -35,9 +33,9 @@ export class Tables extends Component {
   }
 
   componentWillUnmount() {
-    if (this.state.unsubscribe !== null) {
-      this.state.unsubscribe();
-      this.setState({ unsubscribe: null });
+    if (this.unsub) {
+      this.unsub();
+      this.unsub = undefined;
     }
   }
 
