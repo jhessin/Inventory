@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Modal, Popup, Form, Button } from 'semantic-ui-react';
-import { user } from '../data';
+import { user } from '../db';
 
 export class CreateAccount extends Component {
 

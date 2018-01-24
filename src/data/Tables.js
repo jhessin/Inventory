@@ -3,7 +3,7 @@ import {
   Container, Icon, Form,
   Label, Grid
 } from 'semantic-ui-react';
-import { user } from './db';
+import { user } from '../db';
 
 export class Tables extends Component {
   static defaultProps = {

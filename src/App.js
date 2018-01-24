@@ -3,7 +3,8 @@ import {
   Header, Menu, Dropdown
 } from 'semantic-ui-react';
 import { CreateAccount, Login } from './Modals';
-import { Tables, Fields, user } from './data';
+import { Tables, Fields } from './data';
+import { user } from './db';
 import logo from './logo.svg';
 
 class App extends Component {

@@ -1,6 +1,6 @@
 // @flow
 
-import firebase from '../firebase';
+import firebase from './firebase';
 import _ from 'lodash';
 
 export default firebase;
