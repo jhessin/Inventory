@@ -108,7 +108,7 @@ firebase.auth().onAuthStateChanged(currentUser => {
     user.uid = null;
     user.path = () => null;
   }
-  _.forEach(user.listeners, listener => listener.callback(listener.id));
+  _.forEach(user.listeners, value => value.callback());
 })
 
 export const user = {
@@ -116,28 +116,24 @@ export const user = {
   signIn: (...args) => firebase.auth().signInWithEmailAndPassword(...args),
   signOut: () => firebase.auth().signOut(),
   listeners: [], // An array of callbacks
-  onUpdate: callback => {
-    const id = user.listeners.length;
-    user.listeners.push({ callback, id })
-    callback(id);
-    return () => _.remove(user.listeners, listener => listener.id === id);
-  },
   subscribe: (obj, meth = 'onUpdate') => {
-    if (typeof meth === 'string') {
-      const callback = obj[meth];
-      if (callback && typeof callback === 'function') {
-        return obj.unsub = user.onUpdate(callback);
-      }
+    var callback;
+    const id = obj;
+    if (typeof meth === 'function' && obj) {
+      callback = meth
+      user.listeners.push({ id, callback });
+      return callback();
     }
-    if (typeof meth === 'function') {
-      return obj.unsub = user.onUpdate(meth);
+    if (typeof meth === 'string' && typeof obj === 'object') {
+      callback = obj[meth];
+      if (callback && typeof callback === 'function') {
+        user.listeners.push({ id, callback });
+        return callback();
+      }
     }
   },
   unsubscribe: (obj) => {
-    if (obj.unsub && typeof obj.unsub === 'function') {
-      obj.unsub();
-      delete obj.unsub;
-    }
+    _.remove(user.listeners, listener => listener.id === obj);
   },
   get exists() {
     return !!user.uid;
