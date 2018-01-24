@@ -9,21 +9,15 @@ import logo from './logo.svg';
 
 class App extends Component {
   state = {
-    user,
     selectedTable: null,
-    unsubscribe: null,
   }
 
   componentDidMount() {
-    const unsubscribe = user.onChange(() => this.setState({ user }));
-    this.setState({ unsubscribe });
+    user.subscribe(this, () => this.forceUpdate());
   }
 
   componentWillUnmount() {
-    if (this.state.unsubscribe) {
-      this.state.unsubscribe();
-      this.setState({ unsubscribe: null });
-    }
+    user.unsubscribe(this);
   }
 
   render() {

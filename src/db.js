@@ -24,9 +24,10 @@ export class Path {
   _data = {}; // the data stored by this Path
   onUpdate = () => {}; // a callback to be run when the data is updated.
 
-  constructor(path: string, sortBy: ?string) {
+  constructor(path: string, sortBy: ?string = '', filterBy: ?object = {}) {
     this.path = path;
     this.sortBy = sortBy;
+    this.filterBy = filterBy;
     this.ref = firebase.database().ref(path);
 
     this.ref.on('child_added', snap => {
@@ -115,11 +116,28 @@ export const user = {
   signIn: (...args) => firebase.auth().signInWithEmailAndPassword(...args),
   signOut: () => firebase.auth().signOut(),
   listeners: [], // An array of callbacks
-  onChange: callback => {
+  onUpdate: callback => {
     const id = user.listeners.length;
     user.listeners.push({ callback, id })
     callback(id);
     return () => _.remove(user.listeners, listener => listener.id === id);
+  },
+  subscribe: (obj, meth = 'onUpdate') => {
+    if (typeof meth === 'string') {
+      const callback = obj[meth];
+      if (callback && typeof callback === 'function') {
+        return obj.unsub = user.onUpdate(callback);
+      }
+    }
+    if (typeof meth === 'function') {
+      return obj.unsub = user.onUpdate(meth);
+    }
+  },
+  unsubscribe: (obj) => {
+    if (obj.unsub && typeof obj.unsub === 'function') {
+      obj.unsub();
+      delete obj.unsub;
+    }
   },
   get exists() {
     return !!user.uid;

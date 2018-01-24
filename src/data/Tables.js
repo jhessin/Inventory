@@ -17,29 +17,23 @@ export class Tables extends Component {
   }
 
   componentDidMount() {
-    this.unsub = user.onChange(this.loadPath);
-    this.loadPath();
-  }
-
-  loadPath = () => {
-    if (user.exists) {
-      const path = user.path('Tables');
-      path.onUpdate = () => this.setState({ tables: path.dataArray });
-      this.setState({
-        path,
-        tables: path.dataArray
-      });
-    }
+    user.subscribe(this, () => {
+      if (user.exists) {
+        const path = user.path('Tables');
+        path.onUpdate = () => this.setState({ tables: path.dataArray });
+        this.setState({
+          path,
+          tables: path.dataArray
+        });
+      }
+    });
   }
 
   componentWillUnmount() {
-    if (this.unsub) {
-      this.unsub();
-      this.unsub = undefined;
-    }
+    user.unsubscribe(this)
   }
 
-  onChange = (e, { name, value }) => this.setState({ [name]: value })
+  onUpdate = (e, { name, value }) => this.setState({ [name]: value })
 
   onSubmit = () => {
     this.state.path.ref.push({ tableName: this.state.newListName});
@@ -81,7 +75,7 @@ export class Tables extends Component {
                 placeholder='New Table'
                 value={this.state.newListName}
                 name='newListName'
-                onChange={this.onChange}
+                onChange={this.onUpdate}
               />
             </Form>
           </Grid.Row>
