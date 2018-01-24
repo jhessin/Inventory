@@ -3,7 +3,7 @@ import {
   Container, Icon, Form,
   Label, Grid
 } from 'semantic-ui-react';
-import { Path } from './db';
+import { user } from './db';
 
 export class Tables extends Component {
   static defaultProps = {
@@ -16,23 +16,34 @@ export class Tables extends Component {
       newListName: '',
       tables: [],
       path: null,
-      user: props.user
-    }
-
-    // authListen(user => (this.setState({ user })));
-    Path.fromUID('Tables').then(path => {
-      console.log('the path has been set!');
-      this.setState({ tables: path.dataArray });
-      path.onUpdate = () => this.setState({ tables: path.dataArray });
-      this.setState({
-        path
-      });
-    });
+      unsubscribe: null,
+      user
+    };
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { user } = nextProps;
-    this.setState({ user });
+  componentDidMount() {
+    const unsubscribe = user.onChange(this.loadPath);
+    this.setState({ unsubscribe });
+    this.loadPath();
+  }
+
+  loadPath = () => {
+    if (user.exists) {
+      const path = user.path('Tables');
+      path.onUpdate = () => this.setState({ tables: path.dataArray });
+      this.setState({
+        user,
+        path,
+        tables: path.dataArray
+      });
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.state.unsubscribe !== null) {
+      this.state.unsubscribe();
+      this.setState({ unsubscribe: null });
+    }
   }
 
   onChange = (e, { name, value }) => this.setState({ [name]: value })
@@ -68,7 +79,7 @@ export class Tables extends Component {
 
   render = () => (
     <Container textAlign='center'>
-      {!this.state.user ? 'Please Login To Continue' :
+      {!this.state.user.uid ? 'Please Login To Continue' :
         <Grid centered stretched columns={2}>
           {this.state.tables.map(this.renderTable)}
           <Grid.Row columns={1}>

@@ -1,6 +1,7 @@
 // @flow
 
 import firebase from '../firebase';
+import _ from 'lodash';
 
 export default firebase;
 
@@ -97,14 +98,6 @@ export class Path {
 }
 
 // create an all time User
-const user = {
-  signIn: firebase.auth().signInWithEmailAndPassword,
-  signOut: firebase.auth().signOut,
-  data: null,
-  uid: null,
-  path: null
-};
-
 firebase.auth().onAuthStateChanged(currentUser => {
   user.data = currentUser;
   if (currentUser) {
@@ -112,6 +105,25 @@ firebase.auth().onAuthStateChanged(currentUser => {
     user.path = path => new Path(`${user.uid}/${path}`)
   } else {
     user.uid = null;
-    user.path = null;
+    user.path = () => null;
   }
+  _.forEach(user.listeners, listener => listener.callback(listener.id));
 })
+
+export const user = {
+  signIn: firebase.auth().signInWithEmailAndPassword,
+  signOut: firebase.auth().signOut,
+  listeners: [], // An array of callbacks
+  onChange: callback => {
+    const id = user.listeners.length;
+    user.listeners.push({ callback, id })
+    callback(id);
+    return () => _.remove(user.listeners, listener => listener.id === id);
+  },
+  get exists() {
+    return !!user.uid;
+  },
+  data: null,
+  uid: null,
+  path: null
+};
