@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Modal, Popup, Form, Button } from 'semantic-ui-react';
-import firebase from '../firebase';
+import { user } from '../data';
 
 export class Login extends Component {
 
@@ -29,7 +29,7 @@ export class Login extends Component {
   onSubmit = () => {
     const { email, password } = this.state;
 
-    firebase.auth().signInWithEmailAndPassword(email, password).catch((e) => {
+    user.signIn(email, password).catch((e) => {
       console.log(e.message);
         this.setState({
           error: e.message,

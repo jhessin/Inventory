@@ -3,25 +3,27 @@ import {
   Header, Menu, Dropdown
 } from 'semantic-ui-react';
 import { CreateAccount, Login } from './Modals';
-import { Tables, Fields } from './data';
-import firebase from './firebase';
+import { Tables, Fields, user } from './data';
 import logo from './logo.svg';
 
 class App extends Component {
   state = {
     user: null,
-    selectedTable: null
+    selectedTable: null,
+    unsubscribe: null,
   }
 
-  constructor(props) {
-    super(props);
-
-    firebase.auth().onAuthStateChanged(user =>
-      this.setState({ user })
-    );
+  componentDidMount() {
+    const unsubscribe = user.onChange(() => this.setState({ user }));
+    this.setState({ unsubscribe });
   }
 
-  logout = () => firebase.auth().signOut();
+  componentWillUnmount() {
+    if (this.state.unsubscribe) {
+      this.state.unsubscribe();
+      this.setState({ unsubscribe: null });
+    }
+  }
 
   render() {
     return (
@@ -49,8 +51,8 @@ class App extends Component {
                 }
               />
               {
-                this.state.user ?
-                <Dropdown.Item onClick={this.logout}>Logout</Dropdown.Item> :
+                user.exists ?
+                <Dropdown.Item onClick={user.signOut}>Logout</Dropdown.Item> :
                 <Login
                   trigger={
                     <Dropdown.Item>Login</Dropdown.Item>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Modal, Popup, Form, Button } from 'semantic-ui-react';
-import firebase from '../firebase';
+import { user } from '../data';
 
 export class CreateAccount extends Component {
 
@@ -40,7 +40,7 @@ export class CreateAccount extends Component {
       return;
     }
 
-    firebase.auth().createUserWithEmailAndPassword(email, password).catch((e) => {
+    user.create(email, password).catch((e) => {
       console.log(e.message);
         this.setState({
           error: e.message,

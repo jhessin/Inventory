@@ -111,8 +111,9 @@ firebase.auth().onAuthStateChanged(currentUser => {
 })
 
 export const user = {
-  signIn: firebase.auth().signInWithEmailAndPassword,
-  signOut: firebase.auth().signOut,
+  create: (...args) => firebase.auth().createUserWithEmailAndPassword(...args),
+  signIn: (...args) => firebase.auth().signInWithEmailAndPassword(...args),
+  signOut: () => firebase.auth().signOut(),
   listeners: [], // An array of callbacks
   onChange: callback => {
     const id = user.listeners.length;
