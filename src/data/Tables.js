@@ -10,15 +10,11 @@ export class Tables extends Component {
     onSelect: () => null
   }
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      newListName: '',
-      tables: [],
-      path: null,
-      unsubscribe: null,
-      user
-    };
+  state = {
+    newListName: '',
+    tables: [],
+    path: null,
+    unsubscribe: null
   }
 
   componentDidMount() {
@@ -32,7 +28,6 @@ export class Tables extends Component {
       const path = user.path('Tables');
       path.onUpdate = () => this.setState({ tables: path.dataArray });
       this.setState({
-        user,
         path,
         tables: path.dataArray
       });
@@ -79,7 +74,7 @@ export class Tables extends Component {
 
   render = () => (
     <Container textAlign='center'>
-      {!this.state.user.uid ? 'Please Login To Continue' :
+      {!user.uid ? 'Please Login To Continue' :
         <Grid centered stretched columns={2}>
           {this.state.tables.map(this.renderTable)}
           <Grid.Row columns={1}>

@@ -68,7 +68,7 @@ class App extends Component {
             back={() => this.setState({ selectedTable: null })}
             tableId={this.state.selectedTable}
           /> :
-          <Tables user={this.state.user} onSelect={selectedTable => this.setState({ selectedTable })}/>
+          <Tables user={user} onSelect={selectedTable => this.setState({ selectedTable })}/>
         }
       </div>
     );
