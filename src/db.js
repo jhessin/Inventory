@@ -14,16 +14,19 @@ export class Path {
   _data = {}; // the data stored by this Path
   _onUpdate = () => {}; // a callback to be run when the data is updated.
 
-  constructor({ path, sortBy = '', filterBy = {}, clearFilter = false }) {
+  constructor({ path, sortBy = '', filterBy = {}, clearFilter = false, onUpdate }) {
     if (path instanceof Path) {
       this._path = path._path;
       this._sortBy = sortBy || path._sortBy;
       this._filterBy = clearFilter ? filterBy :
         { ...path._filterBy, ...filterBy };
+      this._ref = path._ref;
+      this._onUpdate = onUpdate || path._onUpdate || (() => {});
     } else {
       this._path = path;
+      this._onUpdate = onUpdate || (() => {});
+      this._ref = firebase.database().ref(path);
     }
-    this._ref = firebase.database().ref(path);
     this._sortBy = sortBy;
     this._filterBy = filterBy;
 
@@ -99,10 +102,9 @@ export class Path {
     });
 
     // Sort the data by it's sortBy string
-    arr = _.sortBy(arr, key => key.hasOwnProperty(this._sortBy) ?
-      key[this._sortBy] :
-      key.key
-    );
+    arr = _.sortBy(arr, key => key[this._sortBy] || key.key);
+
+    console.log(arr);
 
     return arr;
   }

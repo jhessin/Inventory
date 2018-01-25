@@ -13,14 +13,17 @@ export class Tables extends Component {
   state = {
     newListName: '',
     tables: [],
+    sorted: false,
     path: null
   }
 
   componentDidMount() {
     user.subscribe(this, () => {
       if (user.exists) {
-        const path = user.path({ path: 'Tables' });
-        path.onUpdate = () => this.setState({ tables: path.dataArray });
+        const path = user.path({
+          path: 'Tables',
+          onUpdate: () => this.setState({ tables: path.dataArray })
+        });
         this.setState({
           path,
           tables: path.dataArray
@@ -42,8 +45,20 @@ export class Tables extends Component {
     });
   }
 
+  onSort = () => {
+    console.log('Sorting...');
+    const sorted = !this.state.sorted;
+    let path;
+    if (sorted) {
+      path = this.state.path.sort('tableName');
+    } else {
+      path = this.state.path.sort();
+    }
+    this.setState({ path, sorted, tables: path.dataArray });
+  }
+
   renderTable = table => (
-    <Grid.Row key={table.key}>
+    <Grid.Row key={table.tableName}>
         <Grid.Column>
           <Label
             as='a'
@@ -66,7 +81,13 @@ export class Tables extends Component {
 
   render = () => (
     <Container textAlign='center'>
-      {!user.uid ? 'Please Login To Continue' :
+      <Label
+        as='a'
+        onClick={() => this.onSort()}
+        floated='left'
+        content={this.state.sorted ? 'Unsort': 'Sort By Name'}
+      />
+      {!user.exists ? 'Please Login To Continue' :
         <Grid centered stretched columns={2}>
           {this.state.tables.map(this.renderTable)}
           <Grid.Row columns={1}>
