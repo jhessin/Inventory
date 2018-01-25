@@ -32,7 +32,6 @@ export class CreateAccount extends Component {
     const { email, password, confirmPass } = this.state;
 
     if (password !== confirmPass) {
-      console.log('The passwords do not match');
       this.setState({
         error: 'The passwords do not match',
         errorState: true

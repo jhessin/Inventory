@@ -1,4 +1,4 @@
-import firebase from '../firebase';
+import { user } from '../db';
 
 export const fieldTypes = [
   'string',
@@ -29,15 +29,18 @@ export function verify({ type, value }) {
   }
 }
 export function pushField(data) {
-  const user = firebase.auth().currentUser;
-  if (!user) {
+  if (!user.exists) {
     console.log('User not logged in!');
     return;
   }
-  if (data && data.id) {
-    return firebase.database().ref(`${user.uid}/Fields/${data.id}`);
+
+  if (data) {
+    if (data.id) {
+      user.path(`Fields/${data.id}`).data = data;
+    } else {
+      user.path('Fields').push(data);
+    }
   }
-  return firebase.database().ref(`${user.uid}/Fields`).push(data);
 }
 
 export function createField({

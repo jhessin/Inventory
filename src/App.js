@@ -58,12 +58,16 @@ class App extends Component {
           </Dropdown>
         </Menu>
 
-        { this.state.selectedTable ?
+        { user.exists ? (
+          this.state.selectedTable ?
           <Fields
             back={() => this.setState({ selectedTable: null })}
             tableId={this.state.selectedTable}
           /> :
-          <Tables user={user} onSelect={selectedTable => this.setState({ selectedTable })}/>
+          <Tables
+            user={user}
+            onSelect={selectedTable => this.setState({ selectedTable })}
+          />) : 'Please login to continue'
         }
       </div>
     );

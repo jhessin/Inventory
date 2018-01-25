@@ -14,11 +14,18 @@ export class Path {
   _data = {}; // the data stored by this Path
   _onUpdate = () => {}; // a callback to be run when the data is updated.
 
-  constructor({ path, sortBy = '', filterBy = {}, clearFilter = false, onUpdate }) {
+  constructor({
+    path,
+    sortBy,
+    filterBy,
+    clearFilter = false,
+    onUpdate }) {
+
+    // Set up all the data to populate the _data content.
     if (path instanceof Path) {
-      this._path = path._path;
-      this._sortBy = sortBy || path._sortBy;
-      this._filterBy = clearFilter ? filterBy :
+      this._path = path._path || '';
+      this._sortBy = sortBy || path._sortBy || '';
+      this._filterBy = clearFilter ? filterBy || {} :
         { ...path._filterBy, ...filterBy };
       this._ref = path._ref;
       this._onUpdate = onUpdate || path._onUpdate || (() => {});
@@ -26,11 +33,13 @@ export class Path {
       this._path = path;
       this._onUpdate = onUpdate || (() => {});
       this._ref = firebase.database().ref(path);
+      this._sortBy = sortBy || '';
+      this._filterBy = filterBy || {};
     }
-    this._sortBy = sortBy;
-    this._filterBy = filterBy;
 
+    // A standard system to update the _data when there is a change.
     const updateData = (snap) => {
+      // if the snapshot doesn't exist do nothing
       if (!snap.exists()) {
         return;
       }
@@ -71,15 +80,13 @@ export class Path {
     this._ref.on('child_changed', updateData);
   }
 
-  set onUpdate(callback) {
-    if (typeof callback === 'function') {
-      this._onUpdate = callback;
+  onUpdate(onUpdate) {
+    if (typeof onUpdate === 'function') {
+      return new Path({ path: this, onUpdate });
     }
   }
 
   get path() { return this._path; }
-
-  get ref() { return this._ref; }
 
   get data() { return this._data; }
 
@@ -104,22 +111,25 @@ export class Path {
     // Sort the data by it's sortBy string
     arr = _.sortBy(arr, key => key[this._sortBy] || key.key);
 
-    console.log(arr);
-
     return arr;
   }
 
-  push(data) { this.ref.push(data); }
-
-  remove() { return this.ref.remove(); }
-
-  filter(filterBy = {}, clearFilter = true) {
-    return new Path({ path: this, filterBy, clearFilter });
+  child = (childPath) => {
+    const path = { ...this, _path: this._path + childPath };
+    return new Path({ path });
   }
 
-  sort(sortBy = '') {
-    return new Path({ path: this, sortBy });
-  }
+  push = (data) => this._ref.push({ ...data, ...this.filterBy})
+
+  remove = () => this._ref.remove()
+
+  filter = (filterBy = {}, clearFilter = true) =>
+    new Path({ path: this, filterBy, clearFilter })
+
+  addFilter = (filterBy = {}) => this.filter(filterBy, false)
+
+  sort = (sortBy = '') => new Path({ path: this, sortBy })
+
 }
 
 // create an all time User
@@ -160,7 +170,7 @@ export const user = {
     _.remove(user.listeners, listener => listener.id === obj);
   },
   get exists() {
-    return !!user.uid;
+    return user.uid && user.path;
   },
   data: null,
   uid: null,

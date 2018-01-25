@@ -12,41 +12,38 @@ export class Tables extends Component {
 
   state = {
     newListName: '',
-    tables: [],
     sorted: false,
     path: null
   }
 
-  componentDidMount() {
-    user.subscribe(this, () => {
-      if (user.exists) {
-        const path = user.path({
-          path: 'Tables',
-          onUpdate: () => this.setState({ tables: path.dataArray })
-        });
-        this.setState({
-          path,
-          tables: path.dataArray
-        });
-      }
-    });
+  get tables() {
+    if (this.state.path) {
+      return this.state.path.dataArray;
+    }
+    return [];
   }
 
-  componentWillUnmount() {
-    user.unsubscribe(this)
+  componentDidMount() {
+    const path = user.path({
+      path: 'Tables',
+      onUpdate: () => this.forceUpdate(),
+      sortBy: this.state.sorted ? 'tableName': '',
+    });
+    this.setState({
+      path
+    });
   }
 
   onUpdate = (e, { name, value }) => this.setState({ [name]: value })
 
   onSubmit = () => {
-    this.state.path.ref.push({ tableName: this.state.newListName});
+    this.state.path.push({ tableName: this.state.newListName});
     this.setState({
       newListName: ''
     });
   }
 
   onSort = () => {
-    console.log('Sorting...');
     const sorted = !this.state.sorted;
     let path;
     if (sorted) {
@@ -54,7 +51,7 @@ export class Tables extends Component {
     } else {
       path = this.state.path.sort();
     }
-    this.setState({ path, sorted, tables: path.dataArray });
+    this.setState({ path, sorted });
   }
 
   renderTable = table => (
@@ -87,9 +84,8 @@ export class Tables extends Component {
         floated='left'
         content={this.state.sorted ? 'Unsort': 'Sort By Name'}
       />
-      {!user.exists ? 'Please Login To Continue' :
         <Grid centered stretched columns={2}>
-          {this.state.tables.map(this.renderTable)}
+          {this.tables.map(this.renderTable)}
           <Grid.Row columns={1}>
             <Form size='massive' onSubmit={this.onSubmit}>
               <Form.Input
@@ -101,7 +97,6 @@ export class Tables extends Component {
             </Form>
           </Grid.Row>
         </Grid>
-    }
   </Container>
   )
 }
