@@ -14,11 +14,18 @@ export class Path {
   _data = {}; // the data stored by this Path
   _onUpdate = () => {}; // a callback to be run when the data is updated.
 
-  constructor(path: string, sortBy: ?string = '', filterBy: ?object = {}) {
-    this._path = path;
+  constructor({ path, sortBy = '', filterBy = {}, clearFilter = false }) {
+    if (path instanceof Path) {
+      this._path = path._path;
+      this._sortBy = sortBy || path._sortBy;
+      this._filterBy = clearFilter ? filterBy :
+        { ...path._filterBy, ...filterBy };
+    } else {
+      this._path = path;
+    }
+    this._ref = firebase.database().ref(path);
     this._sortBy = sortBy;
     this._filterBy = filterBy;
-    this._ref = firebase.database().ref(path);
 
     const updateData = (snap) => {
       if (!snap.exists()) {
@@ -107,7 +114,7 @@ firebase.auth().onAuthStateChanged(currentUser => {
   user.data = currentUser;
   if (currentUser) {
     user.uid = currentUser.uid;
-    user.path = (path, ...args) => new Path(`${user.uid}/${path}`, ...args)
+    user.path = ({ path, ...args }) => new Path({ path: `${user.uid}/${path}`, ...args })
   } else {
     user.uid = null;
     user.path = () => null;

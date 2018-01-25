@@ -19,7 +19,7 @@ export class Tables extends Component {
   componentDidMount() {
     user.subscribe(this, () => {
       if (user.exists) {
-        const path = user.path('Tables');
+        const path = user.path({ path: 'Tables' });
         path.onUpdate = () => this.setState({ tables: path.dataArray });
         this.setState({
           path,
