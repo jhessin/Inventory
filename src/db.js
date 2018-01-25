@@ -99,7 +99,10 @@ export class Path {
     });
 
     // Sort the data by it's sortBy string
-    arr = _.sortBy(arr, key => key[this._sortBy]);
+    arr = _.sortBy(arr, key => key.hasOwnProperty(this._sortBy) ?
+      key[this._sortBy] :
+      key.key
+    );
 
     return arr;
   }
@@ -107,6 +110,14 @@ export class Path {
   push(data) { this.ref.push(data); }
 
   remove() { return this.ref.remove(); }
+
+  filter(filterBy = {}, clearFilter = true) {
+    return new Path({ path: this, filterBy, clearFilter });
+  }
+
+  sort(sortBy = '') {
+    return new Path({ path: this, sortBy });
+  }
 }
 
 // create an all time User
