@@ -6,64 +6,74 @@ import _ from 'lodash';
 export default firebase;
 
 export class Path {
-  static fromUID(path, sortBy) {
-    return new Promise((resolve, reject) => {
-      const unsubscribe = firebase.auth().onAuthStateChanged(user => {
-        if (user) {
-          unsubscribe();
-          resolve(new Path(`${user.uid}/${path}`, sortBy));
-        }
-      });
-    });
-  }
-
-  ref = firebase.database().ref(); // the ref to the Path
-  path = ''; // the string of the Path
-  sortBy = ''; // a field to sort the data by when getting the dataArray
-  filterBy = {}; // key value pairs to filter the list by.
+  // Private Data
+  _ref = firebase.database().ref(); // the ref to the Path
+  _path = ''; // the string of the Path
+  _sortBy = ''; // a field to sort the data by when getting the dataArray
+  _filterBy = {}; // key value pairs to filter the list by.
   _data = {}; // the data stored by this Path
-  onUpdate = () => {}; // a callback to be run when the data is updated.
+  _onUpdate = () => {}; // a callback to be run when the data is updated.
 
   constructor(path: string, sortBy: ?string = '', filterBy: ?object = {}) {
-    this.path = path;
-    this.sortBy = sortBy;
-    this.filterBy = filterBy;
-    this.ref = firebase.database().ref(path);
+    this._path = path;
+    this._sortBy = sortBy;
+    this._filterBy = filterBy;
+    this._ref = firebase.database().ref(path);
 
-    this.ref.on('child_added', snap => {
+    const updateData = (snap) => {
       if (!snap.exists()) {
         return;
       }
 
-      // TODO: Filter the list by the filterBy criteria.
       const value = snap.val();
+      // Filter the list by the filterBy criteria.
       if (typeof value === 'object') {
-        this._data[snap.key] = value;
-        this._data[snap.key].key = snap.key;
-        this._data[snap.key].ref = snap.ref;
+        for (var filter in filterBy) {
+          if (filterBy.hasOwnProperty(filter) &&
+            value.hasOwnProperty(filter) &&
+            value[filter] !== filterBy[filter]) {
+            return;
+          }
+        }
+      }
+      // save the value to the _data object.
+      this._data[snap.key] = value;
+      const { key, ref } = snap;
+      if (typeof value === 'object') {
+        this._data[snap.key].key = key;
+        this._data[snap.key].ref = ref;
       } else {
-        const { key, ref } = snap;
         this._data[snap.key] = { key, ref };
         this._data[snap.key].value = value;
       }
 
-      this.onUpdate();
-    });
+      this._onUpdate();
+    }
 
-    this.ref.on('child_removed', snap => {
+    this._ref.on('child_added', updateData);
+
+    this._ref.on('child_removed', snap => {
       if (delete this._data[snap.key]) {
-        this.onUpdate();
+        this._onUpdate();
       }
     });
 
-    this.ref.on('child_changed', snap => {
-      this._data[snap.key] = snap.val();
-    })
+    this._ref.on('child_changed', updateData);
   }
 
-  get data() {
-    return this._data;
+  set onUpdate(callback) {
+    if (typeof callback === 'function') {
+      this._onUpdate = callback;
+    }
   }
+
+  get path() { return this._path; }
+
+  get ref() { return this._ref; }
+
+  get data() { return this._data; }
+
+  set data(obj) { this.ref.update(obj); }
 
   get dataArray() {
     if (!this._data || typeof this._data !== 'object') {
@@ -75,27 +85,21 @@ export class Path {
       return [];
     }
 
-    const arr = [];
+    let arr = [];
 
     Object.keys(this._data).forEach(key => {
       arr.push(this._data[key]);
     });
 
-    // TODO: Sort the data by it's sortBy
+    // Sort the data by it's sortBy string
+    arr = _.sortBy(arr, key => key[this._sortBy]);
+
     return arr;
   }
 
-  set data(obj) {
-    this.ref.update(obj);
-  }
+  push(data) { this.ref.push(data); }
 
-  push(data) {
-    this.ref.push(data);
-  }
-
-  remove() {
-    return this.ref.remove();
-  }
+  remove() { return this.ref.remove(); }
 }
 
 // create an all time User
@@ -103,7 +107,7 @@ firebase.auth().onAuthStateChanged(currentUser => {
   user.data = currentUser;
   if (currentUser) {
     user.uid = currentUser.uid;
-    user.path = path => new Path(`${user.uid}/${path}`)
+    user.path = (path, ...args) => new Path(`${user.uid}/${path}`, ...args)
   } else {
     user.uid = null;
     user.path = () => null;
