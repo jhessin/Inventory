@@ -18,7 +18,19 @@
     "no-console": "warn",
     "no-unused-vars": "warn",
     "semi": "error",
-    "comma-dangle": ["error", "always"]
+    "comma-dangle": ["error", "always"],
+    "jsx-quotes": ["error", "prefer-single"],
+    "quotes": [
+      "error",
+      "single", {
+        "allowTemplateLiterals": true
+      }
+    ],
+    "no-multi-spaces": [ "error", { "ignoreEOLComments": true } ],
+    "no-trailing-spaces": "error",
+    "no-else-return": "error",
+    "getter-return": "error",
+    "no-floating-decimal": "error"
     },
   "settings": {
     "flowtype": {

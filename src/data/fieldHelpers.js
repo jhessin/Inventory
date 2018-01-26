@@ -29,8 +29,10 @@ export function verify({ type, value, }) {
   ) {
     return type.validate(value);
   }
-  return false;
+    return false;
+
 }
+
 export function pushField(data) {
   if (!user.exists) {
     // eslint-disable-next-line no-console
