@@ -15,22 +15,22 @@
     "es6": true,
     },
   "rules": {
-    "no-console": "warn",
-    "no-unused-vars": "warn",
-    "semi": "error",
-    "comma-dangle": ["error", "always"],
-    "jsx-quotes": ["error", "prefer-single"],
+    "no-console": 1,
+    "no-unused-vars": 1,
+    "semi": 2,
+    "comma-dangle": [2, "always"],
+    "jsx-quotes": [2, "prefer-single"],
     "quotes": [
-      "error",
+      2,
       "single", {
         "allowTemplateLiterals": true
       }
     ],
-    "no-multi-spaces": [ "error", { "ignoreEOLComments": true } ],
-    "no-trailing-spaces": "error",
-    "no-else-return": "error",
-    "getter-return": "error",
-    "no-floating-decimal": "error"
+    "no-multi-spaces": [ 2, { "ignoreEOLComments": true } ],
+    "no-trailing-spaces": 2,
+    "no-else-return": 2,
+    "getter-return": 2,
+    "no-floating-decimal": 2
     },
   "settings": {
     "flowtype": {
