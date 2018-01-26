@@ -1,40 +1,28 @@
 // @flow
 
-import { user } from '../db';
+import { user, } from '../db';
 
-export const fieldTypes: [{ typeName: string, validate: () => boolean }] = [
+export const fieldTypes:
+  [{ typeName: string, validate: (mixed) => boolean }] = [
   {
     typeName: 'string',
-    validate: value => typeof value === 'string'
+    validate: value => typeof value === 'string',
   },
   {
     typeName: 'number',
-    validate: value => typeof value === 'number'
+    validate: value => typeof value === 'number',
   },
   {
     typeName: 'boolean',
-    validate: value => typeof value === 'boolean'
+    validate: value => typeof value === 'boolean',
   },
   {
     typeName: 'date',
-    validate: value => value instanceof Date
+    validate: value => value instanceof Date,
   },
-  {
-    typeName: 'link',
-    validate: value => {
-      if (!(value instanceof Array)) {
-        return false;
-      }
-
-      for (let child of value) {
-        // TODO: validate child data
-        // return typeof child === 'object'
-      }
-    }
-  }
 ];
 
-export function verify({ type, value }) {
+export function verify({ type, value, }) {
   if (type && typeof type === 'object' &&
     type.hasOwnProperty('validate') &&
     typeof type.validate === 'function'
@@ -45,7 +33,8 @@ export function verify({ type, value }) {
 }
 export function pushField(data) {
   if (!user.exists) {
-    console.error('User not logged in!'); // eslint-disable-line no-console
+    // eslint-disable-next-line no-console
+    console.error('User not logged in!');
     return;
   }
 
@@ -59,7 +48,7 @@ export function pushField(data) {
 }
 
 export function createField({
-  named, type, tableId
+  named, type, tableId,
 }) {
   if (!named) {
     return null;
@@ -73,15 +62,15 @@ export function createField({
       return {
         id: pushField().key,
         fieldName: named,
-        fieldType: type
-      }
+        fieldType: type,
+      };
     case 'link':
       if (!tableId) return null;
       return {
         id: pushField().key,
         fieldName: named,
-        fieldType: type
-      }
+        fieldType: type,
+      };
     default:
       return null;
   }

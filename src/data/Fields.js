@@ -1,15 +1,15 @@
-import React, { Component } from 'react';
+import React, { Component, } from 'react';
 import PropTypes from 'prop-types';
 // eslint-disable-next-line
 import { createField } from './fieldHelpers';
 // createfield({ named: string, type: Enum, tableId(opt): string});
 import {
-  Button, Table
+  Button, Table,
 } from 'semantic-ui-react';
 
 export class Fields extends Component {
   static defaultProps = {
-    back: () => null
+    back: () => null,
   }
 
   state = {
@@ -58,5 +58,5 @@ export class Fields extends Component {
 
 Fields.propTypes = {
   tableId: PropTypes.string.isRequired,
-  back: PropTypes.function
-}
+  back: PropTypes.function,
+};

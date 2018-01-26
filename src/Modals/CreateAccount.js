@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { Modal, Popup, Form, Button } from 'semantic-ui-react';
-import { user } from '../db';
+import React, { Component, } from 'react';
+import { Modal, Popup, Form, Button, } from 'semantic-ui-react';
+import { user, } from '../db';
 
 export class CreateAccount extends Component {
 
@@ -10,31 +10,31 @@ export class CreateAccount extends Component {
     password: '',
     confirmPass: '',
     error: '',
-    errorState: false
+    errorState: false,
   }
 
   open = () => this.setState({
-    open: true
+    open: true,
   })
 
   dismiss = () => this.setState({
     open: false,
     email: '',
     password: '',
-    confirmPass: ''
+    confirmPass: '',
   })
 
-  onChange = (e, { name, value }) => this.setState({
-    [name]: value
+  onChange = (e, { name, value, }) => this.setState({
+    [name]: value,
   })
 
   onSubmit = () => {
-    const { email, password, confirmPass } = this.state;
+    const { email, password, confirmPass, } = this.state;
 
     if (password !== confirmPass) {
       this.setState({
         error: 'The passwords do not match',
-        errorState: true
+        errorState: true,
       });
       return;
     }
@@ -42,14 +42,14 @@ export class CreateAccount extends Component {
     user.create(email, password).catch((e) => {
         this.setState({
           error: e.message,
-          errorState: true
+          errorState: true,
         });
       }).then(() => this.state.errorState ? null : this.dismiss());
   }
 
   clearError = () => this.setState({
     error: '',
-    errorState: false
+    errorState: false,
   })
 
   render = () => (

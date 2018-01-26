@@ -19,14 +19,14 @@ export class Path {
     sortBy,
     filterBy,
     clearFilter = false,
-    onUpdate }) {
+    onUpdate, }) {
 
     // Set up all the data to populate the _data content.
     if (path instanceof Path) {
       this._path = path._path || '';
       this._sortBy = sortBy || path._sortBy || '';
       this._filterBy = clearFilter ? filterBy || {} :
-        { ...path._filterBy, ...filterBy };
+        { ...path._filterBy, ...filterBy, };
       this._ref = path._ref;
       this._onUpdate = onUpdate || path._onUpdate || (() => {});
     } else {
@@ -57,17 +57,17 @@ export class Path {
       }
       // save the value to the _data object.
       this._data[snap.key] = value;
-      const { key, ref } = snap;
+      const { key, ref, } = snap;
       if (typeof value === 'object') {
         this._data[snap.key].key = key;
         this._data[snap.key].ref = ref;
       } else {
-        this._data[snap.key] = { key, ref };
+        this._data[snap.key] = { key, ref, };
         this._data[snap.key].value = value;
       }
 
       this._onUpdate();
-    }
+    };
 
     this._ref.on('child_added', updateData);
 
@@ -82,7 +82,7 @@ export class Path {
 
   onUpdate(onUpdate) {
     if (typeof onUpdate === 'function') {
-      return new Path({ path: this, onUpdate });
+      return new Path({ path: this, onUpdate, });
     }
   }
 
@@ -115,20 +115,20 @@ export class Path {
   }
 
   child = (childPath) => {
-    const path = { ...this, _path: this._path + childPath };
-    return new Path({ path });
+    const path = { ...this, _path: this._path + childPath, };
+    return new Path({ path, });
   }
 
-  push = (data) => this._ref.push({ ...data, ...this.filterBy})
+  push = (data) => this._ref.push({ ...data, ...this.filterBy,})
 
   remove = () => this._ref.remove()
 
   filter = (filterBy = {}, clearFilter = true) =>
-    new Path({ path: this, filterBy, clearFilter })
+    new Path({ path: this, filterBy, clearFilter, })
 
   addFilter = (filterBy = {}) => this.filter(filterBy, false)
 
-  sort = (sortBy = '') => new Path({ path: this, sortBy })
+  sort = (sortBy = '') => new Path({ path: this, sortBy, })
 
 }
 
@@ -137,13 +137,13 @@ firebase.auth().onAuthStateChanged(currentUser => {
   user.data = currentUser;
   if (currentUser) {
     user.uid = currentUser.uid;
-    user.path = ({ path, ...args }) => new Path({ path: `${user.uid}/${path}`, ...args })
+    user.path = ({ path, ...args }) => new Path({ path: `${user.uid}/${path}`, ...args, });
   } else {
     user.uid = null;
     user.path = () => null;
   }
   _.forEach(user.listeners, value => value.callback());
-})
+});
 
 export const user = {
   create: (...args) => firebase.auth().createUserWithEmailAndPassword(...args),
@@ -154,14 +154,14 @@ export const user = {
     var callback;
     const id = obj;
     if (typeof meth === 'function' && obj) {
-      callback = meth
-      user.listeners.push({ id, callback });
+      callback = meth;
+      user.listeners.push({ id, callback, });
       return callback();
     }
     if (typeof meth === 'string' && typeof obj === 'object') {
       callback = obj[meth];
       if (callback && typeof callback === 'function') {
-        user.listeners.push({ id, callback });
+        user.listeners.push({ id, callback, });
         return callback();
       }
     }
@@ -174,5 +174,5 @@ export const user = {
   },
   data: null,
   uid: null,
-  path: null
+  path: null,
 };

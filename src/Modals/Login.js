@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { Modal, Popup, Form, Button } from 'semantic-ui-react';
-import { user } from '../db';
+import React, { Component, } from 'react';
+import { Modal, Popup, Form, Button, } from 'semantic-ui-react';
+import { user, } from '../db';
 
 export class Login extends Component {
 
@@ -9,37 +9,37 @@ export class Login extends Component {
     email: '',
     password: '',
     error: '',
-    errorState: false
+    errorState: false,
   }
 
   open = () => this.setState({
-    open: true
+    open: true,
   })
 
   dismiss = () => this.setState({
     open: false,
     email: '',
-    password: ''
+    password: '',
   })
 
-  onChange = (e, { name, value }) => this.setState({
-    [name]: value
+  onChange = (e, { name, value, }) => this.setState({
+    [name]: value,
   })
 
   onSubmit = () => {
-    const { email, password } = this.state;
+    const { email, password, } = this.state;
 
     user.signIn(email, password).catch((e) => {
         this.setState({
           error: e.message,
-          errorState: true
+          errorState: true,
         });
       }).then(() => this.state.errorState ? null : this.dismiss());
   }
 
   clearError = () => this.setState({
     error: '',
-    errorState: false
+    errorState: false,
   })
 
   render = () => (

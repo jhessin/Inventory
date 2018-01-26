@@ -1,20 +1,20 @@
-import React, { Component } from 'react';
+import React, { Component, } from 'react';
 import PropTypes from 'prop-types';
 import {
   Container, Icon, Form,
-  Label, Grid
+  Label, Grid,
 } from 'semantic-ui-react';
-import { user } from '../db';
+import { user, } from '../db';
 
 export class Tables extends Component {
   static defaultProps = {
-    onSelect: () => null
+    onSelect: () => null,
   }
 
   state = {
     newListName: '',
     sorted: false,
-    path: null
+    path: null,
   }
 
   get tables() {
@@ -31,16 +31,16 @@ export class Tables extends Component {
       sortBy: this.state.sorted ? 'tableName': '',
     });
     this.setState({
-      path
+      path,
     });
   }
 
-  onUpdate = (e, { name, value }) => this.setState({ [name]: value })
+  onUpdate = (e, { name, value, }) => this.setState({ [name]: value, })
 
   onSubmit = () => {
-    this.state.path.push({ tableName: this.state.newListName});
+    this.state.path.push({ tableName: this.state.newListName,});
     this.setState({
-      newListName: ''
+      newListName: '',
     });
   }
 
@@ -52,7 +52,7 @@ export class Tables extends Component {
     } else {
       path = this.state.path.sort();
     }
-    this.setState({ path, sorted });
+    this.setState({ path, sorted, });
   }
 
   renderTable = table => (
@@ -103,5 +103,5 @@ export class Tables extends Component {
 }
 
 Tables.propTypes = {
-  onSelect: PropTypes.function
-}
+  onSelect: PropTypes.function,
+};

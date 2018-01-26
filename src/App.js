@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component, } from 'react';
 import {
-  Header, Menu, Dropdown
+  Header, Menu, Dropdown,
 } from 'semantic-ui-react';
-import { CreateAccount, Login } from './Modals';
-import { Tables, Fields } from './data';
-import { user } from './db';
+import { CreateAccount, Login, } from './Modals';
+import { Tables, Fields, } from './data';
+import { user, } from './db';
 import logo from './logo.svg';
 
 class App extends Component {
@@ -34,7 +34,7 @@ class App extends Component {
         <Menu
           attached='top'
           inverted
-          style={{ marginTop: 0 }}
+          style={{ marginTop: 0, }}
         >
           <Dropdown item text='User'>
             <Dropdown.Menu>
@@ -61,12 +61,12 @@ class App extends Component {
         { user.exists ? (
           this.state.selectedTable ?
           <Fields
-            back={() => this.setState({ selectedTable: null })}
+            back={() => this.setState({ selectedTable: null, })}
             tableId={this.state.selectedTable}
           /> :
           <Tables
             user={user}
-            onSelect={selectedTable => this.setState({ selectedTable })}
+            onSelect={selectedTable => this.setState({ selectedTable, })}
           />) : 'Please login to continue'
         }
       </div>
