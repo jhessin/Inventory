@@ -30,7 +30,6 @@ export class Login extends Component {
     const { email, password } = this.state;
 
     user.signIn(email, password).catch((e) => {
-      console.log(e.message);
         this.setState({
           error: e.message,
           errorState: true

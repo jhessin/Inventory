@@ -1,36 +1,51 @@
+// @flow
+
 import { user } from '../db';
 
-export const fieldTypes = [
-  'string',
-  'number',
-  'boolean',
-  'date',
-  'link'
+export const fieldTypes: [{ typeName: string, validate: () => boolean }] = [
+  {
+    typeName: 'string',
+    validate: value => typeof value === 'string'
+  },
+  {
+    typeName: 'number',
+    validate: value => typeof value === 'number'
+  },
+  {
+    typeName: 'boolean',
+    validate: value => typeof value === 'boolean'
+  },
+  {
+    typeName: 'date',
+    validate: value => value instanceof Date
+  },
+  {
+    typeName: 'link',
+    validate: value => {
+      if (!(value instanceof Array)) {
+        return false;
+      }
+
+      for (let child of value) {
+        // TODO: validate child data
+        // return typeof child === 'object'
+      }
+    }
+  }
 ];
 
 export function verify({ type, value }) {
-  if (!type || !value) {
-    return null;
+  if (type && typeof type === 'object' &&
+    type.hasOwnProperty('validate') &&
+    typeof type.validate === 'function'
+  ) {
+    return type.validate(value);
   }
-
-  switch (type) {
-    case 'string':
-      return typeof value === 'string';
-    case 'number':
-      return typeof value === 'number';
-    case 'boolean':
-      return typeof value === 'boolean';
-    case 'date':
-      return value instanceof Date;
-    case 'link':
-      return value instanceof Array;
-    default:
-      return false;
-  }
+  return false;
 }
 export function pushField(data) {
   if (!user.exists) {
-    console.log('User not logged in!');
+    console.error('User not logged in!'); // eslint-disable-line no-console
     return;
   }
 

@@ -21,7 +21,7 @@ export class Fields extends Component {
   }
 
   renderFields = field => (
-    <Table.HeaderCell>field.fieldName</Table.HeaderCell>
+    <Table.HeaderCell>{field.fieldName}</Table.HeaderCell>
   )
 
   renderRows = row => (
@@ -57,5 +57,6 @@ export class Fields extends Component {
 }
 
 Fields.propTypes = {
-  tableId: PropTypes.string.isRequired
+  tableId: PropTypes.string.isRequired,
+  back: PropTypes.function
 }

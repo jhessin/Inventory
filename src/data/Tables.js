@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {
   Container, Icon, Form,
   Label, Grid
@@ -99,4 +100,8 @@ export class Tables extends Component {
         </Grid>
   </Container>
   )
+}
+
+Tables.propTypes = {
+  onSelect: PropTypes.function
 }

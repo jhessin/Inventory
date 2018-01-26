@@ -40,7 +40,6 @@ export class CreateAccount extends Component {
     }
 
     user.create(email, password).catch((e) => {
-      console.log(e.message);
         this.setState({
           error: e.message,
           errorState: true
