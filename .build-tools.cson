@@ -1,0 +1,52 @@
+providers: [
+  {
+    key: "bt"
+    config:
+      commands: [
+        {
+          project: "/Users/jameshessin/Local Documents/websites/inventory"
+          source: "/Users/jameshessin/Local Documents/websites/inventory/.build-tools.cson"
+          name: "start"
+          command: "yarn start"
+          wd: "."
+          env: {}
+          modifier:
+            save_all: {}
+          environment:
+            name: "child_process"
+            config:
+              stdoe: "both"
+          stdout:
+            pipeline: []
+          stderr:
+            pipeline: []
+          output:
+            console:
+              close_success: true
+              queue_in_buffer: false
+              colors: false
+              stdin: false
+          version: 2
+        }
+        {
+          project: "/Users/jameshessin/Local Documents/websites/inventory"
+          source: "/Users/jameshessin/Local Documents/websites/inventory/.build-tools.cson"
+          name: "kill"
+          command: "killall node"
+          wd: "."
+          env: {}
+          modifier: {}
+          environment:
+            name: "child_process"
+            config:
+              stdoe: "both"
+          stdout:
+            pipeline: []
+          stderr:
+            pipeline: []
+          output: {}
+          version: 2
+        }
+      ]
+  }
+]

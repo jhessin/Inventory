@@ -2,25 +2,29 @@
 
 import { user, } from '../db';
 
-export const fieldTypes:
-	[{ typeName: string, validate: (mixed) => boolean }] = [
-		{
-			typeName: 'string',
-			validate: value => typeof value === 'string',
-		},
-		{
-			typeName: 'number',
-			validate: value => typeof value === 'number',
-		},
-		{
-			typeName: 'boolean',
-			validate: value => typeof value === 'boolean',
-		},
-		{
-			typeName: 'date',
-			validate: value => value instanceof Date,
-		},
-	];
+type FieldType = {
+	typeName: string,
+	validate: (mixed) => boolean
+}
+
+export const fieldTypes: Array<FieldType> = [
+	{
+		typeName: 'string',
+		validate: value => typeof value === 'string',
+	},
+	{
+		typeName: 'number',
+		validate: value => typeof value === 'number',
+	},
+	{
+		typeName: 'boolean',
+		validate: value => typeof value === 'boolean',
+	},
+	{
+		typeName: 'date',
+		validate: value => value instanceof Date,
+	},
+];
 
 export function verify({ type, value, }) {
 	if (type && typeof type === 'object' &&
