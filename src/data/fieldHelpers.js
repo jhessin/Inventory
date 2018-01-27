@@ -40,10 +40,8 @@ export function pushField(data) {
 	}
 
 	if (data) {
-		if (data.id)
-			user.path(`Fields/${data.id}`).data = data;
-		else
-			user.path('Fields').push(data);
+		if (data.id) user.path(`Fields/${data.id}`).data = data;
+		else user.path('Fields').push(data);
 
 	}
 }
@@ -51,8 +49,7 @@ export function pushField(data) {
 export function createField({
 	named, type, tableId,
 }) {
-	if (!named)
-		return null;
+	if (!named) return null;
 
 
 	switch (type) {
