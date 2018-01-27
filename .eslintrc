@@ -30,7 +30,12 @@
     "no-trailing-spaces": 2,
     "no-else-return": 2,
     "getter-return": 2,
-    "no-floating-decimal": 2
+    "no-floating-decimal": 2,
+    "no-template-curly-in-string": 2,
+    "valid-jsdoc": 2,
+    "array-callback-return": 2,
+    "curly": [ 2, "multi-or-nest" ],
+    "indent": [ 2, "tab" ]
     },
   "settings": {
     "flowtype": {
