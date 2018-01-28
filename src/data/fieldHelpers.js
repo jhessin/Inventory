@@ -26,7 +26,7 @@ export const fieldTypes: Array<FieldType> = [
 	},
 ];
 
-export function verify({ type, value, }) {
+export function verify({ type, value, }: {type: FieldType, value: mixed }) {
 	if (type && typeof type === 'object' &&
 		type.hasOwnProperty('validate') &&
 		typeof type.validate === 'function'
@@ -36,24 +36,17 @@ export function verify({ type, value, }) {
 
 }
 
-export function pushField(data) {
-	if (!user.exists) {
-		// eslint-disable-next-line no-console
-		console.error('User not logged in!');
-		return;
-	}
+export function pushField(data: ?Object) {
 
-	if (data) {
-		if (data.id) user.path(`Fields/${data.id}`).data = data;
-		else user.path('Fields').push(data);
-
-	}
+	if (data)
+		if (data.id) return (user.path(`Fields/${data.id}`).data = data);
+		else return (user.path('Fields').push(data));
 }
 
 export function createField({
 	named, type, tableId,
-}) {
-	if (!named) return null;
+}: { named: string, tableId: string, type: FieldType, }) {
+	if (!named || !user) return null;
 
 
 	switch (type) {

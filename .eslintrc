@@ -2,12 +2,12 @@
   "parser": "babel-eslint",
   "extends": [
     "eslint:recommended",
+    "plugin:flowtype/recommended",
     "plugin:react/recommended",
-    "plugin:flowtype/recommended"
   ],
   "plugins": [
     "react",
-    "flowtype"
+    "flowtype",
   ],
   "env": {
     "browser": true,
@@ -33,14 +33,13 @@
     "no-template-curly-in-string": 2,
     "valid-jsdoc": 2,
     "array-callback-return": 2,
-    "curly": [ 2, "multi-line", "consistent" ],
+    "curly": [ 2, "multi", "consistent" ],
     "indent": [ 2, "tab" ],
     "dot-location": [ 2, "object"],
     "dot-notation": 2,
     "eqeqeq": 2,
     "no-implicit-coercion": 2,
     "no-implicit-globals": 2,
-    "no-invalid-this": 2,
     "no-loop-func": 2,
     "no-magic-numbers": 2,
     "no-multi-spaces": [ 2, { "ignoreEOLComments": true } ],
@@ -61,6 +60,11 @@
     "prefer-promise-reject-errors": 2,
     "vars-on-top": 1,
     "wrap-iife": [ 2, "inside" ],
+
+    "flowtype/sort-keys": [ 2, "asc", {
+      "caseSensitive": false,
+      "natural": true,
+    }]
     },
   "settings": {
     "flowtype": {

@@ -15,11 +15,17 @@ export class Path {
 	_onUpdate = () => {}; // a callback to be run when the data is updated.
 
 	constructor({
-		path,
-		sortBy,
-		filterBy,
+		path = '',
+		sortBy = '',
+		filterBy = {},
 		clearFilter = false,
-		onUpdate, }) {
+		onUpdate = () => {}, }: {
+			clearFilter: boolean,
+			filterBy: Object,
+			onUpdate: Function,
+			path: mixed,
+			sortBy: string,
+		}) {
 
 		// Set up all the data to populate the _data content.
 		if (path instanceof Path) {
@@ -46,15 +52,15 @@ export class Path {
 
 			const value = snap.val();
 			// Filter the list by the filterBy criteria.
-			if (typeof value === 'object') {
-				for (var filter in filterBy) {
+			if (typeof value === 'object')
+				for (let filter in filterBy)
 					if (filterBy.hasOwnProperty(filter) &&
 						value.hasOwnProperty(filter) &&
 						value[filter] !== filterBy[filter])
 						return;
 
-				}
-			}
+
+
 			// save the value to the _data object.
 			this._data[snap.key] = value;
 			const { key, ref, } = snap;
@@ -80,7 +86,7 @@ export class Path {
 		this._ref.on('child_changed', updateData);
 	}
 
-	onUpdate(onUpdate) {
+	onUpdate(onUpdate: Function) {
 		if (typeof onUpdate === 'function')
 			return new Path({ path: this, onUpdate, });
 
@@ -97,10 +103,10 @@ export class Path {
 			return [];
 
 
-		if (Object.keys(this._data).length === 0) {
-			// Shortcut for faster loading
-			return [];
-		}
+		// Shortcut for faster loading
+		// eslint-disable-next-line no-magic-numbers
+		if (Object.keys(this._data).length === 0) return [];
+
 
 		let arr = [];
 
