@@ -60,6 +60,25 @@
     "prefer-promise-reject-errors": 2,
     "vars-on-top": 1,
     "wrap-iife": [ 2, "inside" ],
+    "no-catch-shadow": 2,
+    "callback-return": 2,
+    "global-require": 2,
+    "no-mixed-requires": [ 2, { "grouping": true }],
+		"array-bracket-newline": [ 2, {
+			"multiline": true,
+			"minItems": 2,
+		}],
+		"array-bracket-spacing": [ 2, "always", {
+			"singleValue": false,
+			"objectsInArrays": false,
+			"arraysInArrays": false,
+		}],
+		"array-element-newline": [ 2, {
+			"multiline": true, "minItems": 3
+		}],
+		"brace-style": [ 2, "1tbs", {
+			"allowSingleLine": true
+		}],
 
     "flowtype/sort-keys": [ 2, "asc", {
       "caseSensitive": false,
