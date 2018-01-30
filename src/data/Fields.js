@@ -1,23 +1,23 @@
-import React, { Component, } from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 // eslint-disable-next-line
 import { createField } from './fieldHelpers';
-// createfield({ named: string, type: Enum, tableId(opt): string});
+// Createfield({ named: string, type: Enum, tableId(opt): string});
 import {
 	Button, Table,
 } from 'semantic-ui-react';
 
 export class Fields extends Component {
-	static defaultProps = {
-		back: () => null,
-	}
+	static defaultProps = {back: () => null}
 
 	state = {
-		fields: [], // id: string,
-		// fieldName: string,
-		// fieldType: Enum(string, number, date, link),
-		// linkedTable: (for fieldType link) string id of the linked table.
-		rows: [],	// an array of objects indexed by the field ids.
+		fields: [], // Id: string,
+		/*
+		 * fieldName: string,
+		 * fieldType: Enum(string, number, date, link),
+		 * linkedTable: (for fieldType link) string id of the linked table.
+		 */
+		rows  : [],	// An array of objects indexed by the field ids.
 	}
 
 	renderFields = field => (
@@ -40,14 +40,24 @@ export class Fields extends Component {
 					<Table.Header>
 						<Table.Row>
 							{this.state.fields.map(this.renderFields)}
-							<Table.HeaderCell><Button icon='plus' content='Add Field'/></Table.HeaderCell>
+							<Table.HeaderCell>
+								<Button
+									icon='plus'
+									content='Add Field'
+								/>
+							</Table.HeaderCell>
 						</Table.Row>
 					</Table.Header>
 
 					<Table.Body>
 						{this.state.rows.map(this.renderRows)}
 						<Table.Row>
-							<Table.Cell><Button icon='plus' content='Add Record'/></Table.Cell>
+							<Table.Cell>
+								<Button
+									icon='plus'
+									content='Add Record'
+								/>
+							</Table.Cell>
 						</Table.Row>
 					</Table.Body>
 				</Table>
@@ -58,5 +68,5 @@ export class Fields extends Component {
 
 Fields.propTypes = {
 	tableId: PropTypes.string.isRequired,
-	back: PropTypes.function,
+	back   : PropTypes.function,
 };

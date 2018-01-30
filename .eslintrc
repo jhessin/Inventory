@@ -115,9 +115,6 @@
 				"else": { "before": false },
 			}
 		}],
-		"line-comment-position": [ "error", {
-			"ignorePattern": "(--)|(@)"
-		}],
 		"linebreak-style": "error",
 		"lines-around-comment": "error",
 		"lines-between-class-members": "error",
@@ -176,6 +173,49 @@
 				"prev": "*",
 				"next": "*"
 			},
+			// Things that should have blank lines after them
+			{
+				"blankLine": "always",
+				"prev": [
+					"block",
+					"block-like",
+					"cjs-export",
+					"export",
+					"cjs-import",
+					"import",
+					"const",
+					"let",
+					"directive",
+				],
+				"next": "*"
+			},
+			// Things that should have blank lines before them
+			{
+				"blankLine": "always",
+				"prev": "*",
+				"next": [
+					"block",
+					"block-like",
+					"cjs-export",
+					"case",
+					"class",
+					"continue",
+					"default",
+					"directive",
+					"do",
+					"export",
+					"for",
+					"function",
+					"if",
+					"multiline-block-like",
+					"return",
+					"switch",
+					"throw",
+					"try",
+					"while",
+					"with",
+				],
+			},
 			// Things that should be grouped together
 			{
 				"blankLine": "never",
@@ -189,32 +229,18 @@
 			},
 			{
 				"blankLine": "never",
+				"prev": "export",
+				"next": "export",
+			},
+			{
+				"blankLine": "never",
 				"prev": [ "const", "let" ],
 				"next": [ "const", "let" ],
 			},
-			// Things that should have blank lines after them
 			{
-				"blankLine": "always",
-				"prev": [
-					"import",
-					"let",
-					"const",
-					"block",
-					"block-like"
-				],
-				"next": "*"
-			},
-			// Things that should have blank lines before them
-			{
-				"blankLine": "always",
-				"prev": "*",
-				"next": [
-					"return",
-					"block",
-					"block-like",
-					"export",
-					"cjs-export",
-				],
+				"blankLine": "never",
+				"prev": "case",
+				"next": "case",
 			},
 		],
 

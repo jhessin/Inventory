@@ -6,6 +6,15 @@ type FieldType = {
 	typeName: string,
 	validate: (mixed) => boolean
 }
+
+type Args = {
+	named: ?string,
+	tableId: ?string,
+	type: ?FieldType,
+	value: ?mixed,
+}
+
+// An array of FieldTypes
 export const fieldTypes: Array<FieldType> = [
 	{
 		typeName: 'string',
@@ -27,7 +36,7 @@ export const fieldTypes: Array<FieldType> = [
 
 export const verify = ({
 	type, value,
-}: {type: FieldType, value: mixed}) => {
+}: Args) => {
 	if(type && typeof type === 'object' &&
 		type.hasOwnProperty('validate') &&
 		typeof type.validate === 'function'
@@ -43,7 +52,7 @@ export const pushField = (data: ?Object) => {
 
 export const createField = ({
 	named, type, tableId,
-}: { named: string, tableId: string, type: FieldType, }) => {
+}: Args) => {
 	if(!named || !user) return null;
 
 	switch (type) {
@@ -64,6 +73,7 @@ export const createField = ({
 			fieldName: named,
 			fieldType: type,
 		};
+
 	default:
 		return null;
 	}

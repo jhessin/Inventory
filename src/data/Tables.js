@@ -1,58 +1,54 @@
-import React, { Component, } from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {
 	Container, Icon, Form,
 	Label, Grid,
 } from 'semantic-ui-react';
-import { user, } from '../db';
+import {user} from '../db';
 
 export class Tables extends Component {
-	static defaultProps = {
-		onSelect: () => null,
-	}
+	static defaultProps = {onSelect: () => null}
 
 	state = {
 		newListName: '',
-		sorted: false,
-		path: null,
+		sorted     : false,
+		path       : null,
 	}
 
 	get tables() {
-		if (this.state.path)
-			return this.state.path.dataArray;
+		if(this.state.path) return this.state.path.dataArray;
 
 		return [];
 	}
 
 	componentDidMount() {
 		const path = user.path({
-			path: 'Tables',
+			path    : 'Tables',
 			onUpdate: () => this.forceUpdate(),
-			sortBy: this.state.sorted ? 'tableName': '',
+			sortBy  : this.state.sorted ? 'tableName': '',
 		});
-		this.setState({
-			path,
-		});
+
+		this.setState({path});
 	}
 
-	onUpdate = (e, { name, value, }) => this.setState({ [name]: value, })
+	onUpdate = (e, {
+		name, value,
+	}) => this.setState({[name]: value})
 
 	onSubmit = () => {
-		this.state.path.push({ tableName: this.state.newListName,});
-		this.setState({
-			newListName: '',
-		});
+		this.state.path.push({tableName: this.state.newListName});
+		this.setState({newListName: ''});
 	}
 
 	onSort = () => {
 		const sorted = !this.state.sorted;
 		let path;
-		if (sorted)
-			path = this.state.path.sort('tableName');
-		 else
-			path = this.state.path.sort();
 
-		this.setState({ path, sorted, });
+		if(sorted) path = this.state.path.sort('tableName');
+		else path = this.state.path.sort();
+		this.setState({
+			path, sorted,
+		});
 	}
 
 	renderTable = table => (
@@ -102,6 +98,4 @@ export class Tables extends Component {
 	)
 }
 
-Tables.propTypes = {
-	onSelect: PropTypes.function,
-};
+Tables.propTypes = {onSelect: PropTypes.function};
