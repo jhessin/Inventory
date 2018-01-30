@@ -2,17 +2,17 @@
 
 import {user} from '../db';
 
-type FieldType = {
+export type FieldType = {
 	typeName: string,
-	validate: (mixed) => boolean
-}
+	validate: mixed => boolean,
+};
 
-type Args = {
+export type Args = {
 	named: ?string,
 	tableId: ?string,
 	type: ?FieldType,
 	value: ?mixed,
-}
+};
 
 // An array of FieldTypes
 export const fieldTypes: Array<FieldType> = [
@@ -37,7 +37,9 @@ export const fieldTypes: Array<FieldType> = [
 export const verify = ({
 	type, value,
 }: Args) => {
-	if(type && typeof type === 'object' &&
+	if(
+		type &&
+		typeof type === 'object' &&
 		type.hasOwnProperty('validate') &&
 		typeof type.validate === 'function'
 	) return type.validate(value);
@@ -47,7 +49,8 @@ export const verify = ({
 
 export const pushField = (data: ?Object) => {
 	if(data) if(data.id) return (user.path(`Fields/${data.id}`).data = data);
-		else return (user.path('Fields').push(data));
+		else return user.path('Fields').
+			push(data);
 };
 
 export const createField = ({

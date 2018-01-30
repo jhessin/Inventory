@@ -5,6 +5,20 @@ import _ from 'lodash';
 
 export default firebase;
 
+type StringArgs = {
+	clearFilter: boolean,
+	filterBy: Object,
+	onUpdate: Function,
+	path: string,
+	sortBy: string,
+};
+
+type PathArgs = StringArgs & {
+	path: Path,
+};
+
+export type Args = StringArgs | PathArgs;
+
 export class Path {
 	// Private Data
 	_ref = firebase.database().
@@ -31,13 +45,7 @@ export class Path {
 		filterBy = {},
 		clearFilter = false,
 		onUpdate = () => {},
-	}: {
-		clearFilter: boolean,
-		filterBy: Object,
-		onUpdate: Function,
-		path: mixed,
-		sortBy: string,
-	}) {
+	}: Args) {
 		// Set up all the data to populate the _data content.
 		if(path instanceof Path) {
 			this._path = path._path || '';
@@ -115,7 +123,7 @@ export class Path {
 		return this._data;
 	}
 
-	set data(obj) {
+	set data(obj: ?mixed) {
 		this.ref.update(obj);
 	}
 
@@ -223,7 +231,4 @@ export const user = {
 	get exists() {
 		return user.uid && user.path;
 	},
-	data: null,
-	uid : null,
-	path: null,
 };
