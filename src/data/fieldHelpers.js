@@ -1,6 +1,7 @@
 // @flow
 
 import {user} from '../db';
+
 type FieldType = {
 	typeName: string,
 	validate: (mixed) => boolean
@@ -23,6 +24,7 @@ export const fieldTypes: Array<FieldType> = [
 		validate: value => value instanceof Date,
 	},
 ];
+
 export const verify = ({
 	type, value,
 }: {type: FieldType, value: mixed}) => {
@@ -30,16 +32,20 @@ export const verify = ({
 		type.hasOwnProperty('validate') &&
 		typeof type.validate === 'function'
 	) return type.validate(value);
+
 	return false;
 };
+
 export const pushField = (data: ?Object) => {
 	if(data) if(data.id) return (user.path(`Fields/${data.id}`).data = data);
 		else return (user.path('Fields').push(data));
 };
+
 export const createField = ({
 	named, type, tableId,
 }: { named: string, tableId: string, type: FieldType, }) => {
 	if(!named || !user) return null;
+
 	switch (type) {
 	case 'string':
 	case 'number':
@@ -52,6 +58,7 @@ export const createField = ({
 		};
 	case 'link':
 		if(!tableId) return null;
+
 		return {
 			id       : pushField().key,
 			fieldName: named,
