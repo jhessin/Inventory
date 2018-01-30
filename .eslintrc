@@ -17,77 +17,180 @@
   "rules": {
     "no-console": 1,
     "no-unused-vars": 1,
-    "semi": 2,
-    "comma-dangle": [2, "always"],
-    "jsx-quotes": [2, "prefer-single"],
+    "semi": "error",
     "quotes": [
       2,
       "single", {
         "allowTemplateLiterals": true
       }
     ],
-    "no-trailing-spaces": 2,
-    "no-else-return": 2,
-    "getter-return": 2,
-    "no-floating-decimal": 2,
-    "no-template-curly-in-string": 2,
-    "valid-jsdoc": 2,
-    "array-callback-return": 2,
-    "curly": [ 2, "multi", "consistent" ],
-    "indent": [ 2, "tab" ],
-    "dot-location": [ 2, "object"],
-    "dot-notation": 2,
-    "eqeqeq": 2,
-    "no-implicit-coercion": 2,
-    "no-implicit-globals": 2,
-    "no-loop-func": 2,
-    "no-magic-numbers": 2,
-    "no-multi-spaces": [ 2, { "ignoreEOLComments": true } ],
-    "no-multi-str": 2,
-    "no-new": 2,
-    "no-param-reassign": 2,
-    "no-return-assign": 2,
-    "no-self-compare": 2,
-    "no-sequences": 2,
-    "no-unmodified-loop-condition": 2,
-    "no-unused-expressions": [ 2, {
+    "no-else-return": "error",
+    "getter-return": "error",
+    "no-floating-decimal": "error",
+    "no-template-curly-in-string": "error",
+    "valid-jsdoc": "error",
+    "array-callback-return": "error",
+    "curly": [ "error", "multi", "consistent" ],
+    "dot-location": [ "error", "object"],
+    "dot-notation": "error",
+    "eqeqeq": "error",
+    "no-implicit-coercion": "error",
+    "no-implicit-globals": "error",
+    "no-loop-func": "error",
+    "no-magic-numbers": "error",
+    "no-multi-spaces": [ "error", { "ignoreEOLComments": true } ],
+    "no-multi-str": "error",
+    "no-new": "error",
+    "no-param-reassign": "error",
+    "no-return-assign": "error",
+    "no-self-compare": "error",
+    "no-sequences": "error",
+    "no-unmodified-loop-condition": "error",
+    "no-unused-expressions": [ "error", {
       "allowShortCircuit": true,
       "allowTernary": true,
      }],
-    "no-useless-concat": 2,
-    "no-useless-return": 2,
+    "no-useless-concat": "error",
+    "no-useless-return": "error",
     "no-warning-comments": 1,
-    "prefer-promise-reject-errors": 2,
+    "prefer-promise-reject-errors": "error",
     "vars-on-top": 1,
-    "wrap-iife": [ 2, "inside" ],
-    "no-catch-shadow": 2,
-    "callback-return": 2,
-    "global-require": 2,
-    "no-mixed-requires": [ 2, { "grouping": true }],
-		"array-bracket-newline": [ 2, {
+    "wrap-iife": [ "error", "inside" ],
+    "no-catch-shadow": "error",
+    "callback-return": "error",
+    "global-require": "error",
+    "no-mixed-requires": [ "error", { "grouping": true }],
+		"array-bracket-newline": [ "error", {
 			"multiline": true,
 			"minItems": 2,
 		}],
-		"array-bracket-spacing": [ 2, "always", {
+		"array-bracket-spacing": [ "error", "always", {
 			"singleValue": false,
 			"objectsInArrays": false,
 			"arraysInArrays": false,
 		}],
-		"array-element-newline": [ 2, {
+		"array-element-newline": [ "error", {
 			"multiline": true, "minItems": 3
 		}],
-		"brace-style": [ 2, "1tbs", {
+		"block-spacing": [ "error", "never" ],
+		"brace-style": [ "error", "1tbs", {
 			"allowSingleLine": true
 		}],
+		"camelcase": "error",
+		"capitalized-comments": [ "error", "always", {
+			"ignoreInlineComments": true,
+			"ignoreConsecutiveComments": true,
+		}],
+		"comma-dangle": [ "error", "always-multiline"],
+		"comma-spacing": [ "error", {
+			"before": false,
+			"after": true,
+		}],
+		"comma-style": "error",
+		"computed-property-spacing": "error",
+		"eol-last": "error",
+		"func-call-spacing": "error",
+		"func-style": [ "error", "declaration", {
+			"allowArrowFunctions": true,
+		}],
+		"function-paren-newline": ["error", {
+			"minItems": 3
+		}],
+		"implicit-arrow-linebreak": "error",
+		"indent": [ "error", "tab" ],
+		"jsx-quotes": [ "error", "prefer-single"],
+		"key-spacing": [ "error", {
+			"align": {
+				"on": "colon",
+			},
+		}],
+		"keyword-spacing": [ "error", {
+			"overrides": {
+				"if": { "after": false },
+				"for": { "after": false },
+				"while": { "after": false },
+				"function": { "after": false },
+				"else": { "before": false },
+			}
+		}],
+		"line-comment-position": [ "error", {
+			"ignorePattern": "(--)|(@)"
+		}],
+		"linebreak-style": "error",
+		"lines-around-comment": "error",
+		"lines-between-class-members": "error",
+		"max-depth": "error",
+		"max-len": "error",
+		"max-lines": [ "error", {
+			"skipComments": true,
+		}],
+		"max-params": "error",
+		"max-statements": "error",
+		"max-statements-per-line": "error",
+		"multiline-comment-style": "error",
+		"multiline-ternary": [ "error", "always-multiline"],
+		"new-cap": "error",
+		"new-parens": "error",
+		"newline-per-chained-call": "error",
+		"no-array-constructor": "error",
+		"no-bitwise": "error",
+		"no-lonely-if": "error",
+		"no-mixed-operators": "error",
+		"no-multiple-empty-lines": [ "error", {
+			"max": 1,
+			"maxBOF": 0,
+		}],
+		"no-negated-condition": "error",
+		"no-nested-ternary": "error",
+		"no-new-object": "error",
+		"no-restricted-syntax": ["error", {
+			"selector": "FunctionDeclaration",
+			"message": "Prefer FatArrow => Functions",
+		}],
+		"no-trailing-spaces": "error",
+		"no-unneeded-ternary": "error",
+		"no-whitespace-before-property": "error",
+		"nonblock-statement-body-position": "error",
+		"object-curly-newline": ["error", {
+        "minProperties": 2,
+    }],
+		"object-curly-spacing": "error",
+		"object-property-newline": [ "error", {
+			"allowAllPropertiesOnSameLine": true,
+		}],
+		"one-var": [ "error", {
+			"let": "always",
+			"const": "never",
+		}],
+		"one-var-declaration-per-line": "error",
+		"operator-assignment": "error",
+		"operator-linebreak": "error",
+		"padded-blocks": [ "error", "never" ],
+		"padding-line-between-statements": [ "error", {
+				"blankLine": "always",
+				"prev": "*",
+				"next": "return"
+			},{
+				"blankLine": "always",
+				"prev": [
+					"let",
+					"const",
+					"block",
+					"block-like"
+				],
+				"next": "*"
+			},{
+				"blankLine": "never",
+				"prev": "*",
+				"next": "*"
+			},
+    ],
 
-    "flowtype/sort-keys": [ 2, "asc", {
+		"no-var": "error",
+
+    "flowtype/sort-keys": [ "error", "asc", {
       "caseSensitive": false,
       "natural": true,
     }]
     },
-  "settings": {
-    "flowtype": {
-      "onlyFilesWithFlowAnnotation": false
-    }
-  }
 }
