@@ -18,12 +18,6 @@
 		"no-console": 1,
 		"no-unused-vars": 1,
 		"semi": "error",
-		"quotes": [
-			2,
-			"single", {
-				"allowTemplateLiterals": true
-			}
-		],
 		"no-else-return": "error",
 		"getter-return": "error",
 		"no-floating-decimal": "error",
@@ -243,6 +237,21 @@
 				"next": "case",
 			},
 		],
+		"quote-props": [ "error", "as-needed" ],
+		"quotes": [
+			2,
+			"single", {
+				"allowTemplateLiterals": true
+			}
+		],
+		"require-jsdoc": ["error", {
+			"require": {
+				"ClassDeclaration": true,
+				"MethodDefinition": true,
+				"ArrowFunctionExpression": true,
+				"FunctionExpression": true,
+			}
+		}],
 
 		"no-var": "error",
 
