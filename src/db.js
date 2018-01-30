@@ -107,7 +107,7 @@ export class Path {
 		});
 	}
 
-	get path() {
+	get path(): string {
 		return this._path;
 	}
 
