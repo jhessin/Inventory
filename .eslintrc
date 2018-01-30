@@ -54,13 +54,7 @@
 		"callback-return": "error",
 		"global-require": "error",
 		"no-mixed-requires": ["error", { "grouping": true }],
-		"array-bracket-newline": [
-			"error",
-			{
-				"multiline": true,
-				"minItems": 2
-			}
-		],
+		"array-bracket-newline": ["error", "always"],
 		"array-bracket-spacing": [
 			"error",
 			"always",
@@ -70,21 +64,9 @@
 				"arraysInArrays": false
 			}
 		],
-		"array-element-newline": [
-			"error",
-			{
-				"multiline": true,
-				"minItems": 3
-			}
-		],
+		"array-element-newline": ["error", "always"],
 		"block-spacing": ["error", "never"],
-		"brace-style": [
-			"error",
-			"1tbs",
-			{
-				"allowSingleLine": true
-			}
-		],
+		"brace-style": ["error", "1tbs"],
 		"camelcase": "error",
 		"capitalized-comments": [
 			"error",
@@ -116,7 +98,7 @@
 		"function-paren-newline": [
 			"error",
 			{
-				"minItems": 3
+				"minItems": 2
 			}
 		],
 		"implicit-arrow-linebreak": "error",
@@ -203,12 +185,7 @@
 			}
 		],
 		"object-curly-spacing": "error",
-		"object-property-newline": [
-			"error",
-			{
-				"allowAllPropertiesOnSameLine": true
-			}
-		],
+		"object-property-newline": "error",
 		"one-var": [
 			"error",
 			{
