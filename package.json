@@ -2,6 +2,26 @@
   "name": "inventory",
   "version": "0.1.0",
   "private": true,
+  "eslintConfig": {
+    "parser": "babel-eslint",
+    "extends": ["standard", "standard-jsx", "plugin:flowtype/recommended"],
+    "plugins": ["react", "flowtype"],
+    "env": {
+      "browser": true,
+      "node": true,
+      "es6": true
+    },
+    "rules": {
+      "semi": [
+        "error",
+        "always",
+        {
+          "omitLastInOneLineBlock": true
+        }
+      ],
+      "comma-dangle": ["error", "always-multiline"]
+    }
+  },
   "dependencies": {
     "firebase": "^4.8.1",
     "lodash": "^4.17.4",
