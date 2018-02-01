@@ -2,10 +2,10 @@
 
 import { user, Path } from '../db';
 
-export type FieldType = {
+export type FieldType = {|
   typeName: string,
   validate: mixed => boolean,
-};
+|};
 
 export type Args = {
   named: ?string,
