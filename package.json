@@ -4,8 +4,15 @@
   "private": true,
   "eslintConfig": {
     "parser": "babel-eslint",
-    "extends": ["standard", "standard-jsx", "plugin:flowtype/recommended"],
-    "plugins": ["react", "flowtype"],
+    "extends": [
+      "standard",
+      "standard-jsx",
+      "plugin:flowtype/recommended"
+    ],
+    "plugins": [
+      "react",
+      "flowtype"
+    ],
     "env": {
       "browser": true,
       "node": true,
@@ -19,7 +26,10 @@
           "omitLastInOneLineBlock": true
         }
       ],
-      "comma-dangle": ["error", "always-multiline"]
+      "comma-dangle": [
+        "error",
+        "always-multiline"
+      ]
     }
   },
   "dependencies": {
@@ -41,9 +51,16 @@
   "devDependencies": {
     "babel-eslint": "^8.2.1",
     "eslint": "^4.16.0",
+    "eslint-config-standard": "^11.0.0-beta.0",
+    "eslint-config-standard-jsx": "^4.0.2",
     "eslint-plugin-flowtype": "^2.42.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-node": "^5.2.1",
     "eslint-plugin-prettier": "^2.5.0",
+    "eslint-plugin-promise": "^3.6.0",
     "eslint-plugin-react": "^7.6.0",
-    "flow-bin": "^0.64.0"
+    "eslint-plugin-standard": "^3.0.1",
+    "flow-bin": "^0.64.0",
+    "prettier": "^1.10.2"
   }
 }
