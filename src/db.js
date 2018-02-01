@@ -103,7 +103,9 @@ export class Path {
     this._ref.on('child_added', updateData);
 
     this._ref.on('child_removed', snap => {
-      if (delete this._data[snap.key]) this._onUpdate();
+      console.log('removing child' + snap.key);
+      delete this._data[snap.key];
+      this._onUpdate();
     });
 
     this._ref.on('child_changed', updateData);
@@ -129,7 +131,6 @@ export class Path {
     if (!this._data || typeof this._data !== 'object') return [];
 
     // Shortcut for faster loading
-    // eslint-disable-next-line no-magic-numbers
     if (Object.keys(this._data).length === 0) return [];
 
     let arr = [];
@@ -169,6 +170,11 @@ export class Path {
   sort = (sortBy = '') => new Path(this, { sortBy });
 }
 
+// returns a defaultPath
+function defaultPath (path: string, args: Args): ?Path {
+  return null;
+}
+
 // Create an all time User
 firebase.auth().onAuthStateChanged(currentUser => {
   user.data = currentUser;
@@ -183,7 +189,7 @@ firebase.auth().onAuthStateChanged(currentUser => {
     };
   } else {
     user.uid = '';
-    user.path = () => new Path();
+    user.path = defaultPath;
   }
   _.forEach(user.listeners, value => value.callback());
 });
@@ -227,5 +233,5 @@ export const user = {
   },
   data: {},
   uid: '',
-  path: (path: string = '', args?: Args): Path => new Path(path, args),
+  path: defaultPath,
 };

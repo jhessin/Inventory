@@ -4,8 +4,8 @@ providers: [
     config:
       commands: [
         {
-          project: "/Users/jameshessin/Local Documents/websites/inventory"
-          source: "/Users/jameshessin/Local Documents/websites/inventory/.build-tools.cson"
+          project: "/home/jhessin/websites/inventory"
+          source: "/home/jhessin/websites/inventory/.build-tools.cson"
           name: "start"
           command: "yarn start"
           wd: "."
@@ -29,8 +29,8 @@ providers: [
           version: 2
         }
         {
-          project: "/Users/jameshessin/Local Documents/websites/inventory"
-          source: "/Users/jameshessin/Local Documents/websites/inventory/.build-tools.cson"
+          project: "/home/jhessin/websites/inventory"
+          source: "/home/jhessin/websites/inventory/.build-tools.cson"
           name: "kill"
           command: "killall node"
           wd: "."
