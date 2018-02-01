@@ -48,13 +48,18 @@ export const verify = ({ type, value }: Args) => {
 };
 
 export const pushField = (data: ?Object) => {
+  let path;
   if (data) {
     if (data.id) {
-      let path = user.path(`Fields/${data.id}`);
+      path = user.path(`Fields/${data.id}`);
       if (path) return (path.data = data);
-    } else return user.path('Fields').push(data);
+    } else {
+      path = user.path('Fields');
+      if (path) return path.push(data);
+    }
   }
-  return new Path('Fields').push(data);
+  path = new Path('Fields');
+  return path.push(data);
 };
 
 export const createField = ({ named, type, tableId }: Args) => {

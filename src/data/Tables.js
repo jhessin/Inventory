@@ -1,3 +1,5 @@
+// @flow
+
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Container, Icon, Form, Label, Grid } from 'semantic-ui-react';
@@ -36,8 +38,7 @@ export class Tables extends Component {
    * @returns {null} Nothing to return
    */
   componentDidMount () {
-    const path = user.path({
-      path: 'Tables',
+    const path = user.path('Tables', {
       onUpdate: () => this.forceUpdate(),
       sortBy: this.state.sorted ? 'tableName' : '',
     });
