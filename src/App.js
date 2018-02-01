@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Header, Menu, Dropdown } from 'semantic-ui-react';
-import { CreateAccount, Login } from './Modals';
-import { Tables, Fields } from './data';
+import { CreateAccount, Login } from './modals';
+import { Tables, Fields } from './screens';
 import { user } from './db';
 import logo from './logo.svg';
 
