@@ -1,0 +1,62 @@
+[
+  {
+    name: "aligner-lua"
+    action: "removed"
+  }
+  {
+    name: "atom-ide-ui"
+    action: "added"
+  }
+  {
+    name: "autocomplete-love"
+    action: "removed"
+  }
+  {
+    name: "autocomplete-lua"
+    action: "removed"
+  }
+  {
+    name: "build-tools"
+    action: "added"
+  }
+  {
+    name: "hyperclick-love"
+    action: "removed"
+  }
+  {
+    name: "ide-flowtype"
+    action: "added"
+  }
+  {
+    name: "js-hyperclick"
+    action: "added"
+  }
+  {
+    name: "linter"
+    action: "removed"
+  }
+  {
+    name: "linter-flow-plus"
+    action: "removed"
+  }
+  {
+    name: "linter-luacheck"
+    action: "removed"
+  }
+  {
+    name: "linter-ui-default"
+    action: "removed"
+  }
+  {
+    name: "love-ide"
+    action: "removed"
+  }
+  {
+    name: "prettier-atom"
+    action: "added"
+  }
+  {
+    name: "busy-signal"
+    action: "removed"
+  }
+]
