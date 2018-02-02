@@ -3,15 +3,23 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Container, Icon, Form, Label, Grid } from 'semantic-ui-react';
-import { user } from '../db';
+import { user, Path } from '../db';
 
+type Props = {
+  onSelect: () => null,
+};
+type State = {
+  newListName: string,
+  sorted: boolean,
+  path: ?Path,
+};
 /**
  * Tables - A React component that displays all of the user's
  * tables in a list and provides options to open, delete, and
  * add new tables.
  * @extends Component
  */
-export class Tables extends Component {
+export class Tables extends Component<Props, State> {
   static defaultProps = { onSelect: () => null };
 
   state = {
