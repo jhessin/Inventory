@@ -171,7 +171,7 @@ export class Path {
 }
 
 // returns a defaultPath
-function defaultPath (path: string, args: Args): ?Path {
+function defaultPath (path: string, args?: Args): ?Path {
   return null;
 }
 

@@ -8,17 +8,13 @@ import { user, Path } from '../db';
 type Props = {
   onSelect: () => null,
 };
+
 type State = {
   newListName: string,
   sorted: boolean,
-  path: ?Path,
+  path?: Path,
 };
-/**
- * Tables - A React component that displays all of the user's
- * tables in a list and provides options to open, delete, and
- * add new tables.
- * @extends Component
- */
+
 export class Tables extends Component<Props, State> {
   static defaultProps = { onSelect: () => null };
 
@@ -28,23 +24,12 @@ export class Tables extends Component<Props, State> {
     path: null,
   };
 
-  /**
-   * Tables - this is a computed property that is used to get the user's
-   * tables from firebase using the user.path.
-   *
-   * @returns {Array} An array containing the user's tables.
-   */
   get tables () {
     if (this.state.path) return this.state.path.dataArray;
 
     return [];
   }
 
-  /**
-   * ComponentDidMount - A react method that updates the user's tables.
-   *
-   * @returns {null} Nothing to return
-   */
   componentDidMount () {
     const path = user.path('Tables', {
       onUpdate: () => this.forceUpdate(),
@@ -54,33 +39,13 @@ export class Tables extends Component<Props, State> {
     this.setState({ path });
   }
 
-  /**
-   * Unknown - Description
-   *
-   * @param {Event}   e             The text changed event.
-   * @param {object} Unknown       Description
-   * @param {type}   Unknown.name  Description
-   * @param {type}   Unknown.value Description
-   *
-   * @returns {type} Description
-   */
   onUpdate = (e, { name, value }) => this.setState({ [name]: value });
 
-  /**
-   * Unknown - Description
-   *
-   * @returns {type} Description
-   */
   onSubmit = () => {
     this.state.path.push({ tableName: this.state.newListName });
     this.setState({ newListName: '' });
   };
 
-  /**
-   * Unknown - Description
-   *
-   * @returns {type} Description
-   */
   onSort = () => {
     const sorted = !this.state.sorted;
     let path;
@@ -93,13 +58,6 @@ export class Tables extends Component<Props, State> {
     });
   };
 
-  /**
-   * Unknown - Description
-   *
-   * @param {type} table Description
-   *
-   * @returns {type} Description
-   */
   renderTable = table => (
     <Grid.Row key={table.key}>
       <Grid.Column>
@@ -122,11 +80,6 @@ export class Tables extends Component<Props, State> {
     </Grid.Row>
   );
 
-  /**
-   * Unknown - Description
-   *
-   * @returns {type} Description
-   */
   render = () => (
     <Container textAlign='center'>
       <Label
